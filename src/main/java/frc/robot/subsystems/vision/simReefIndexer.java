@@ -4,8 +4,8 @@ import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeReefSimula
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class simReefIndexer implements reefIndexerInterface{
-     int heartBeat=0;
+public class simReefIndexer extends reefIndexerIO{
+     
 
     @Override
     public boolean[][] getFullReefState() {
@@ -26,46 +26,19 @@ public class simReefIndexer implements reefIndexerInterface{
             SmartDashboard.putNumberArray(String.valueOf(i), new double[]{pole[0],pole[1],pole[2],pole[3]});
             i++;
         }
-        heartBeat++;
-        SmartDashboard.putNumber("reef heartbeat", heartBeat);
+
         
         //reefBranch.set(publishArr);
         return returnable;
     }
 
-    @Override
-    public boolean getIsClosed(int row, int level) {
-        SmartDashboard.putNumber("reef pole requested", row);
-    
-        return getFullReefState()[row][level];
-    }
 
-    @Override
-    public int getHighestLevelForRow(int row) {
-        if (!getIsClosed(row, 3)){
-            return 4;
-        }
-        if (!getIsClosed(row, 2)){
-            return 3;
-        }
-        if (!getIsClosed(row, 1)){
-            return 2;
-        }
-        return 1;
-    }
 
     @Override
     public void resetSIMONLY(){
         ReefscapeReefSimulation.getInstance().get().clearReef();
     }
 
- 
-
-
-    @Override
-    public boolean hasAlgea(int row, int level){
-        return false;
-    }
 
     @Override 
     public boolean[][] getAlgeaPosits(){

@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.elevator.elevatorInterface;
-import frc.robot.subsystems.wrist.wristInterface;
+import frc.robot.subsystems.elevator.elevatorIO;
+import frc.robot.subsystems.wrist.wristIO;
 /**class to manage the interactions between the elevator and the wrist */
 public class wristElevatorControlManager{
 
@@ -17,8 +17,8 @@ public class wristElevatorControlManager{
 
 
     protected static wristElevatorControllState state = wristElevatorControllState.resting;
-    protected static wristInterface wrist;
-    protected static elevatorInterface elevator;
+    protected static wristIO wrist;
+    protected static elevatorIO elevator;
 
     
 
@@ -29,7 +29,7 @@ public class wristElevatorControlManager{
     }
 
     /**adds the wrist and elevator to be used by the manager */
-    public static void addSystems(wristInterface newWrist, elevatorInterface newElevator){
+    public static void addSystems(wristIO newWrist, elevatorIO newElevator){
         elevator=newElevator;
         wrist=newWrist;
     }

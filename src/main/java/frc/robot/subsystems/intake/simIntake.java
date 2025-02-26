@@ -24,22 +24,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
 
-public class simIntake extends SubsystemBase implements intakeInterface{
+public class simIntake extends intakeIO{
     IntakeSimulation intakeSim;
     
 
-    public static enum intakeState{
-        intaking,
-        outtaking,
-        resting;
-    }
+
     
     private Pose3d coralPose = new Pose3d(-1000, -1000, -1000, new Rotation3d());
     StructPublisher<Pose3d> heldCoralPublisher = NetworkTableInstance.getDefault().getStructTopic("heldCoral", Pose3d.struct).publish();
 
 
-    intakeState state;
-    BooleanSupplier stopTrigger=()->{return false;};
+   
 
     public simIntake(){
         if (RobotBase.isReal()){
@@ -132,55 +127,12 @@ public class simIntake extends SubsystemBase implements intakeInterface{
         }
     }
 
-    @Override
-    public void intake(){
-        intakeUntil(()->hasPeice());
-        
-    }
-    
-    @Override
-    public void intakeUntil(BooleanSupplier trigger){
-        state=intakeState.intaking;
-        stopTrigger=trigger;
-    }
-
-
-    @Override
-    public void outtake(){
-        outtakeUntil(()->!hasPeice());
-
-    }
-
-    @Override
-    public void outtakeUntil(BooleanSupplier trigger) {
-        state=intakeState.outtaking;
-        stopTrigger=trigger;
-    }
+   
 
     @Override
     public void stop(){
         state=intakeState.resting;
         stopTrigger=()->true;
-    }
-
-    @Override 
-    public intakeState getState(){
-        return state;
-    }
-
-    @Override 
-    public void reset(){
-        stop();
-    }
-
-    @Override
-    public Translation3d getTranslation(){
-        Rotation2d rotation = SystemManager.wrist.getCurrentLocationR2D();
-        return new Translation3d(
-            Math.sin(-rotation.getRadians()+Math.toRadians(20))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLenght/2,
-            0,
-            Math.cos(-rotation.getRadians()+Math.toRadians(20))*Constants.intakeConstants.coralFromWristLen)
-        .plus(SystemManager.elevator.getTranslation());
     }
 
 }

@@ -16,10 +16,10 @@ import frc.robot.subsystems.wristElevatorControlManager;
 import frc.robot.subsystems.blinkin.blinkinInterface;
 import frc.robot.subsystems.blinkin.realBlinkin;
 import frc.robot.subsystems.blinkin.simBlinkin;
-import frc.robot.subsystems.elevator.elevatorInterface;
+import frc.robot.subsystems.elevator.elevatorIO;
 import frc.robot.subsystems.elevator.realElevator;
 import frc.robot.subsystems.elevator.simElevator;
-import frc.robot.subsystems.intake.intakeInterface;
+import frc.robot.subsystems.intake.intakeIO;
 import frc.robot.subsystems.intake.realIntake;
 import frc.robot.subsystems.intake.simIntake;
 import frc.robot.subsystems.lidar.lidarInterface;
@@ -31,11 +31,11 @@ import frc.robot.subsystems.vision.aprilTagInterface;
 import frc.robot.subsystems.vision.photonSim;
 import frc.robot.subsystems.vision.realVision;
 import frc.robot.subsystems.CoralGUI.coralGUI;
-import frc.robot.subsystems.vision.reefIndexerInterface;
+import frc.robot.subsystems.vision.reefIndexerIO;
 import frc.robot.subsystems.vision.simReefIndexer;
 import frc.robot.subsystems.wrist.realWrist;
 import frc.robot.subsystems.wrist.simWrist;
-import frc.robot.subsystems.wrist.wristInterface;
+import frc.robot.subsystems.wrist.wristIO;
 import frc.robot.subsystems.CoralGUI.coralGUI;  // Add the import for getCoralArray class
 
 public class SystemManager{
@@ -45,11 +45,11 @@ public class SystemManager{
     public static SimulatedArena simFeild;
     public static AIRobotInSimulation fakeBot;
     public static boolean hasNote = false;
-    public static intakeInterface intake;
+    public static intakeIO intake;
     public static aprilTagInterface aprilTag;
-    public static wristInterface wrist;
-    public static elevatorInterface elevator;
-    public static reefIndexerInterface reefIndexer;
+    public static wristIO wrist;
+    public static elevatorIO elevator;
+    public static reefIndexerIO reefIndexer;
     public static lidarInterface lidar;
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;

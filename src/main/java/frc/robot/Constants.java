@@ -147,6 +147,7 @@ public final class Constants
     public static final Rotation2d angle = Rotation2d.fromDegrees(70);
     public static final Translation3d fromRobotCenter = new Translation3d(0.0584454, 0, 0.583565 );
     public static final double intakePosit = 0;
+    public static final double startingPosit = 0;
     public static final double tolerence = 0.05;
     public static final double speedForSim =0.03;
     public static final double compressedLen = 0.889;
@@ -167,6 +168,7 @@ public final class Constants
         .withKI(0) // no output for integrated error
         .withKD(0.1) // A velocity error of 1 rps results in 0.1 V output
     ;
+    
 
     // set Motion Magic settings
     MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
