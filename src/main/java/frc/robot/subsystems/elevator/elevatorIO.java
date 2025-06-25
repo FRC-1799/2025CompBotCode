@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
 
-public class elevatorIO extends SubsystemBase {
+public abstract class elevatorIO extends SubsystemBase {
 
     protected double setpoint=Constants.elevatorConstants.startingPosit;
 
@@ -52,8 +52,7 @@ public class elevatorIO extends SubsystemBase {
         return new Translation3d(getHeight()*Math.cos(Constants.elevatorConstants.angle.getRadians()), 0, getHeight()*Math.sin(Constants.elevatorConstants.angle.getRadians())).plus(Constants.elevatorConstants.fromRobotCenter);
     };
 
-    /**@return returns the internal encoder value of the elevator encoder. use getHeight instead*/
-    public double getEncoderVal(){throw new Error("This method must be overriden in a child method");}
+
 
     /**@return the height of the elevator in meters. all measurments use the rotation point of the wrist for consistency*/
     public double getHeight(){
@@ -83,4 +82,7 @@ public class elevatorIO extends SubsystemBase {
         wrist.setAngle(SystemManager.wrist.getCurrentLocationR2D().getDegrees());
         SmartDashboard.putNumber("wristVal", SystemManager.wrist.getCurrentLocationR2D().getDegrees());
     }
+
+    /**@return returns the internal encoder value of the elevator encoder. use getHeight instead*/
+    public abstract double getEncoderVal();
 }
