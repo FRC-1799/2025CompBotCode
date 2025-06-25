@@ -146,7 +146,7 @@ public final class Constants
   }
 
   public static final class algaeRemoverConstants{
-    public static final double algeaTimerVal = 0.5;
+    public static final double algeaTimerVal = 10;
     public static final int motorID=12;
 
     public static final double motorSpeed = 0.7;
@@ -161,10 +161,11 @@ public final class Constants
 
     public static final double l1EncoderVal = 0.37;
     public static final double encoderToMeters =69.1514; //1/141;
+    public static final int resetSwitchID = 7;
 
 
     public static final double highAlgeaPrep = 0.8;
-    public static final double lowAlgeaPrep = 0.6;
+    public static final double lowAlgeaPrep = 0;
     // public static final double lowAlgeaAct = 0;
     // public static final double highAlgeaAct = 0;
 
@@ -189,30 +190,31 @@ public final class Constants
     public static final double currentResetThreashold=15;
 
 
-    public static final int mainMotorID=1;
-    public static final int leftMotorID=2;
+    public static final int mainMotorID=2;
+    public static final int altMotorID=1;
 
 
     // in init function
-    public static final TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
 
     // set slot 0 gains
     public static final Slot0Configs slot0Configs = new Slot0Configs()
-        .withKS( 0.25) // Add 0.25 V output to overcome static friction
-        .withKV(0.12) // A velocity target of 1 rps results in 0.12 V output
-        .withKA(0.01) // An acceleration of 1 rps/s requires 0.01 V output
-        .withKP(4.8) // A position error of 2.5 rotations results in 12 V output
+        .withKS(0.25) // Add 0.25 V output to overcome static friction
+        .withKV(0.35) // A velocity target of 1 rps results in 0.12 V output
+        .withKA(0.15) // An acceleration of 1 rps/s requires 0.01 V output
+        .withKP(7.4) // A position error of 2.5 rotations results in 12 V output
         .withKI(0) // no output for integrated error
-        .withKD(0.1) // A velocity error of 1 rps results in 0.1 V output
+        .withKD(0.005) // A velocity error of 1 rps results in 0.1 V output
+        .withKG(1.8)
     ;
     public static final double elevatorResetTolerence = 0.3;
     
 
     // set Motion Magic settings
-    MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
+    public static MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
         .withMotionMagicAcceleration(160)// Target acceleration of 160 rps/s (0.5 seconds)
         .withMotionMagicCruiseVelocity(80)// Target cruise velocity of 80 rps
         .withMotionMagicJerk(1600)// Target jerk of 1600 rps/s/s (0.1 seconds)
+        .withMotionMagicExpo_kA(0.2)
     ;
 
     

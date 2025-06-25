@@ -38,6 +38,7 @@ public class elevatorIO extends SubsystemBase {
      * @param setpoint the height of the elevator in meters
      */
     public void setSetpoint(double setpoint){
+        SmartDashboard.putNumber("most recent elevator update", setpoint);
         setSetpointRaw(setpoint);
     };
 
