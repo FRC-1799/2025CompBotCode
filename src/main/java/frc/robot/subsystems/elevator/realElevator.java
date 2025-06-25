@@ -4,7 +4,6 @@ package frc.robot.subsystems.elevator;
  import com.ctre.phoenix6.controls.MotionMagicVoltage;
  import com.ctre.phoenix6.hardware.TalonFX;
  
- import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;

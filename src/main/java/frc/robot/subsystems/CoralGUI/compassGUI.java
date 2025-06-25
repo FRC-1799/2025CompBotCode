@@ -1,10 +1,8 @@
 package frc.robot.subsystems.CoralGUI;
 
 import edu.wpi.first.networktables.IntegerSubscriber;
-import edu.wpi.first.networktables.IntegerTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class compassGUI {
     protected NetworkTableInstance inst = NetworkTableInstance.getDefault();

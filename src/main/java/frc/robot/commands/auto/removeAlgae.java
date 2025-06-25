@@ -2,14 +2,11 @@ package frc.robot.commands.auto;
 
 
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
 import frc.robot.FieldPosits.reefLevel.algeaRemoval;
-import frc.robot.Utils.scoringPosit;
 import frc.robot.Utils.utillFunctions;
-import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
 
 

@@ -1,14 +1,9 @@
 package frc.robot;
 
 
-import java.lang.System.Logger.Level;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 
-import javax.xml.xpath.XPathVariableResolver;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.FieldPosits.reefLevel;
-import frc.robot.FieldPosits.reefLevel.algeaRemoval;
 import frc.robot.FieldPosits.reefPole;
 import frc.robot.Utils.BetterTrigger;
 import frc.robot.Utils.scoringPosit;
@@ -32,7 +26,6 @@ import frc.robot.Utils.utillFunctions;
 import frc.robot.commands.auto.IntakePeiceCommand;
 import frc.robot.commands.auto.ScorePiece;
 import frc.robot.commands.auto.smallAutoDrive;
-import frc.robot.commands.sim.CreateCoral;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.autoManager;

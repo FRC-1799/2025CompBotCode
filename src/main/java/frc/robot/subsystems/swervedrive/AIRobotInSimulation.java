@@ -177,8 +177,6 @@ public class AIRobotInSimulation implements Subsystem {
             -joystick.getLeftX() * driveSimulation.maxLinearVelocity().in(MetersPerSecond), // Left/Right
             -joystick.getRightX() * driveSimulation.maxAngularVelocity().in(RadiansPerSecond) // Rotation
             );
-        final Supplier<Rotation2d> opponentDriverStationFacing = () ->
-            FieldMirroringUtils.getCurrentAllianceDriverStationFacing().plus(Rotation2d.fromDegrees(180));
 
         return Commands.run(
                         () -> {

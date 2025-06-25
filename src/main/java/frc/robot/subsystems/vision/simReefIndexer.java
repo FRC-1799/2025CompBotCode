@@ -1,18 +1,12 @@
 package frc.robot.subsystems.vision;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeReefSimulation;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.FieldPosits;
 
 

@@ -1,23 +1,17 @@
 package frc.robot.subsystems.lidar;
 
-import java.security.ProtectionDomain;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.BooleanArraySubscriber;
 import edu.wpi.first.networktables.FloatSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArraySubscriber;
-import edu.wpi.first.networktables.StructArrayTopic;
-import edu.wpi.first.networktables.StructSubscriber;
 import edu.wpi.first.wpilibj.Timer;
 
 public class realLidar implements lidarInterface{

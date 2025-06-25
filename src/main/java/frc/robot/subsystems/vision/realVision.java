@@ -42,7 +42,6 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
         NetworkTable visionTable = inst.getTable("Vision");
         NetworkTable coralPositionTable = visionTable.getSubTable("CoralPositions");
         NetworkTable algaePositionTable = visionTable.getSubTable("AlgaePositions");
-        NetworkTable robotPositionTable = visionTable.getSubTable("RobotPosition");
 
         coralLevelSubscribers = new ArrayList<BooleanArraySubscriber>();
         algeaLevelSubscribers = new ArrayList<BooleanArraySubscriber>();

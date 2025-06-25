@@ -1,11 +1,9 @@
 package frc.robot.subsystems.CoralGUI;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.BooleanArrayPublisher;
 import edu.wpi.first.networktables.BooleanArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
-import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class coralGUI extends SubsystemBase {
