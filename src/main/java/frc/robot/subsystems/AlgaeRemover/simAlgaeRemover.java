@@ -29,7 +29,7 @@ public class simAlgaeRemover extends SubsystemBase implements algaeRemoverInterf
 
     @Override
     public void periodic(){
-        if (isRunning&&runningTimer.get()>Constants.algaeRemoverConstants.algeaTimerVal){
+        if (isRunning&&runningTimer.get()>Constants.algaeRemoverConstants.algaeTimerVal){
             runningTimer.stop();
             isRunning=false;
         }

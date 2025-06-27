@@ -41,8 +41,8 @@ import frc.robot.subsystems.wrist.wristIO;
 public class SystemManager{
     public static SwerveSubsystem swerve;
 
-    public static Field2d feild;
-    public static SimulatedArena simFeild;
+    public static Field2d field;
+    public static SimulatedArena simField;
     public static AIRobotInSimulation fakeBot;
     public static boolean hasNote = false;
     public static intakeIO intake;
@@ -71,8 +71,8 @@ public class SystemManager{
         swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),  "swerve"));
         swerve.resetOdometry(Constants.driveConstants.startingPosit);
         
-        feild = new Field2d();
-        SmartDashboard.putData("Field", feild);
+        field = new Field2d();
+        SmartDashboard.putData("Field", field);
 
         SimulatedArena.ALLOW_CREATION_ON_REAL_ROBOT = Constants.simConfigs.robotCanBeSimOnReal;
 
@@ -156,7 +156,7 @@ public class SystemManager{
         }
         
 
-        //inializes and distributes the managers
+        //initializes and distributes the managers
 
         wristElevatorControlManager.addSystems(wrist, elevator);
         generalManager.generalManagerInit();

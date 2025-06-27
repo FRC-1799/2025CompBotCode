@@ -25,8 +25,8 @@ public class simElevator  extends elevatorIO{
     public void periodic(){
 
 
-        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.elevator||
-            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.resting){
+        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.elevator||
+            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.resting){
 
             goal=setpoint;
         }

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import frc.robot.SystemManager;
 import frc.robot.FieldPosits.reefLevel;
-import frc.robot.FieldPosits.reefLevel.algeaRemoval;
+import frc.robot.FieldPosits.reefLevel.algaeRemovalEnum;
 import frc.robot.Utils.warningManager;
 import frc.robot.commands.states.*;
 
@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class generalManager{
 
-    /**enum to represent all the avialable states */
+    /**enum to represent all the available states */
     public enum generalState{
         intake(new intaking()),
         start(new starting()),
@@ -26,8 +26,8 @@ public class generalManager{
         L2(new scoreConfig(reefLevel.L2)),
         L3(new scoreConfig(reefLevel.L3)),
         L4(new scoreConfig(reefLevel.L4)),
-        algaeLow( new removeAlgaeConfig(algeaRemoval.low)),
-        algaeHigh(new removeAlgaeConfig(algeaRemoval.high)),
+        algaeLow( new removeAlgaeConfig(algaeRemovalEnum.low)),
+        algaeHigh(new removeAlgaeConfig(algaeRemovalEnum.high)),
         algaeRemoval(new removeAlgaeAct()),
         outtake(new outtaking()),
         resting(new resting());
@@ -36,13 +36,13 @@ public class generalManager{
 
         /**
          * creates a state with the given command
-         * @param command the command to excecute when the state is sheduled
+         * @param command the command to execute when the state is scheduled
          */
         private generalState(Command command){
             state=command;
         }
 
-        /**def function so states can start being implemnted before their command is complete */
+        /**def function so states can start being implemented before their command is complete */
         private generalState(){
             throw new Error("Attempted to start a state that has not been implemented");
         }
@@ -55,7 +55,7 @@ public class generalManager{
     
     
     
-    /**inializes the general manager. Should be called before any other general manager actions are taken*/
+    /**initializes the general manager. Should be called before any other general manager actions are taken*/
     public static void generalManagerInit(){
       start();
       subsystems.add(SystemManager.wrist);
@@ -65,7 +65,7 @@ public class generalManager{
     }
 
 
-    /**should be called periodicly to keep the general manager up to date */
+    /**should be called periodically to keep the general manager up to date */
     public static void periodic(){
         if (state!=null&&!CommandScheduler.getInstance().isScheduled(state.state)){
             warningManager.throwAlert(warningManager.badGeneralRoutine);
@@ -193,12 +193,12 @@ public class generalManager{
 
     /**
      * to be called whenever a state command finishes
-     * @param wasInterupted wether or not the command was interupted
+     * @param wasInterrupted wether or not the command was interrupted
      */
-    public static void endCallback(boolean wasInterupted){
+    public static void endCallback(boolean wasInterrupted){
         
         if (externalCallback!=null){
-            externalCallback.accept(wasInterupted);
+            externalCallback.accept(wasInterrupted);
             externalCallback=null;
         }
     }

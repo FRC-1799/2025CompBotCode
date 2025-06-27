@@ -12,10 +12,10 @@ public class outtaking extends Command{
         addRequirements(generalManager.subsystems);
     }
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
-        if (!SystemManager.intake.hasPeice()){
+        if (!SystemManager.intake.hasPiece()){
             cancel();
         }
         
@@ -27,7 +27,7 @@ public class outtaking extends Command{
     @Override
     public void execute(){
         if (generalManager.getStateCommand()!=this){
-            warningManager.throwAlert(warningManager.generalRoutineCalledManualy);
+            warningManager.throwAlert(warningManager.generalRoutineCalledManually);
             cancel();
         }
     }
@@ -37,16 +37,16 @@ public class outtaking extends Command{
      */
     @Override 
     public boolean isFinished(){
-        return !SystemManager.intake.hasPeice();
+        return !SystemManager.intake.hasPiece();
     }
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override 
-    public void end(boolean wasInterupted){
+    public void end(boolean wasInterrupted){
         SystemManager.intake.stop();
-        generalManager.endCallback(wasInterupted);      
+        generalManager.endCallback(wasInterrupted);      
     }
 }

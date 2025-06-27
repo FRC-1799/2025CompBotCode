@@ -7,7 +7,7 @@ import frc.robot.subsystems.generalManager;
 
 public class resting extends Command{
 
-    /**creates a command that does nothing but hold the space a state would so that other commands can not sneak into the mechs */
+    /**creates a command that does nothing but hold the space a state would so that other commands can not sneak into the mechanisms */
     public resting(){
         addRequirements(generalManager.subsystems);
     }
@@ -21,17 +21,17 @@ public class resting extends Command{
     @Override
     public void execute(){
         if (generalManager.getStateCommand()!=this){
-            warningManager.throwAlert(warningManager.generalRoutineCalledManualy);
+            warningManager.throwAlert(warningManager.generalRoutineCalledManually);
             cancel();
         }
     }
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasInterupted){
-        generalManager.endCallback(wasInterupted);
+    public void end(boolean wasInterrupted){
+        generalManager.endCallback(wasInterrupted);
     }
 }

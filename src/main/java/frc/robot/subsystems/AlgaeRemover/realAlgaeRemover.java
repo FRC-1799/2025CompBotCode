@@ -34,7 +34,7 @@ public class realAlgaeRemover extends SubsystemBase implements algaeRemoverInter
 
     @Override
     public void periodic(){
-        if (isRunning&&runningTimer.get()>Constants.algaeRemoverConstants.algeaTimerVal){
+        if (isRunning&&runningTimer.get()>Constants.algaeRemoverConstants.algaeTimerVal){
             runningTimer.stop();
             isRunning=false;
         }

@@ -79,7 +79,7 @@ public class AIRobotInSimulation implements Subsystem {
 
 
 
-    /**initalizes a opponent robot on the first available slot */
+    /**initializes a opponent robot on the first available slot */
     public static void startOpponentRobotSimulations() {
         try {
             instances[0] = new AIRobotInSimulation(
@@ -212,7 +212,7 @@ public class AIRobotInSimulation implements Subsystem {
         return driveSimulation.getActualPoseInSimulationWorld().exp(frontRight).getTranslation();
     }
 
-    private Translation2d getBottemCorner(){
+    private Translation2d getBottomCorner(){
         return driveSimulation.getActualPoseInSimulationWorld().exp(backLeft).getTranslation();
     }
     
@@ -230,17 +230,16 @@ public class AIRobotInSimulation implements Subsystem {
     }
 
     public Pair<Translation2d, Translation2d> getHitbox(){
-        return Pair.of(getTopCorner(), getBottemCorner());
+        return Pair.of(getTopCorner(), getBottomCorner());
     }
 
-    public List<Pair<Translation2d, Translation2d>> getTrajHitboxes(){
+    public List<Pair<Translation2d, Translation2d>> getTrajectoryHitboxes(){
         List<Pair<Translation2d, Translation2d>> hitboxes = new ArrayList<>();
         Pair<Translation2d, Translation2d> CurrentHitbox = getHitbox();
         hitboxes.add(CurrentHitbox); 
         Translation2d  velocityTrans = getVelocityOver(0.25);
         for(double i = 0.05; i<0.25; i+=0.05){
-            //Pair<Translation2d, Translation2d> trajHitbox = CurrentHitbox;
-            //trajHitbox.= trajHitbox.first.plus(velocityTrans.times(i));
+
             hitboxes.add(Pair.of(CurrentHitbox.getFirst().plus(velocityTrans.times(i)), CurrentHitbox.getSecond().plus(velocityTrans.times(i))));
         }
         return hitboxes;
@@ -342,7 +341,7 @@ public class AIRobotInSimulation implements Subsystem {
 
 
 
-//     /**initalizes a opponent robot on the first available slot */
+//     /**initializes a opponent robot on the first available slot */
 //     public static void startOpponentRobotSimulations() {
 //         try {
 //             instances[0] = new AIRobotInSimulation(
@@ -483,7 +482,7 @@ public class AIRobotInSimulation implements Subsystem {
 //         return driveSimulation.getActualPoseInSimulationWorld().exp(frontRight).getTranslation();
 //     }
 
-//     private Translation2d getBottemCorner(){
+//     private Translation2d getBottomCorner(){
 //         return driveSimulation.getActualPoseInSimulationWorld().exp(backLeft).getTranslation();
 //     }
     
@@ -501,17 +500,17 @@ public class AIRobotInSimulation implements Subsystem {
 //     }
 
 //     public Pair<Translation2d, Translation2d> getHitbox(){
-//         return Pair.of(getTopCorner(), getBottemCorner());
+//         return Pair.of(getTopCorner(), getBottomCorner());
 //     }
 
-//     public List<Pair<Translation2d, Translation2d>> getTrajHitboxes(){
+//     public List<Pair<Translation2d, Translation2d>> getTrajectoryHitboxes(){
 //         List<Pair<Translation2d, Translation2d>> hitboxes = new ArrayList<>();
 //         Pair<Translation2d, Translation2d> CurrentHitbox = getHitbox();
 //         hitboxes.add(CurrentHitbox); 
 //         Translation2d  velocityTrans = getVelocityOver(0.25);
 //         for(double i = 0.05; i<0.25; i+=0.05){
-//             //Pair<Translation2d, Translation2d> trajHitbox = CurrentHitbox;
-//             //trajHitbox.= trajHitbox.first.plus(velocityTrans.times(i));
+//             //Pair<Translation2d, Translation2d> trajectoryHitbox = CurrentHitbox;
+//             //trajectoryHitbox.= trajectoryHitbox.first.plus(velocityTrans.times(i));
 //             hitboxes.add(Pair.of(CurrentHitbox.getFirst().plus(velocityTrans.times(i)), CurrentHitbox.getSecond().plus(velocityTrans.times(i))));
 //         }
 //         return hitboxes;

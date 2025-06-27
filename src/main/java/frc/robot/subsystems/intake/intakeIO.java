@@ -10,7 +10,7 @@ import frc.robot.SystemManager;
 
 public abstract class intakeIO extends SubsystemBase{
 
-    public enum hasPeiceState{
+    public enum hasPieceState{
 		intaking,
 		full,
 		empty,
@@ -28,15 +28,15 @@ public abstract class intakeIO extends SubsystemBase{
     BooleanSupplier stopTrigger=()->{return false;};
 
 
-    /**sets the intake state to intaking untill a peice is intaked */
+    /**sets the intake state to intaking until a piece is intaked */
     public void intake(){
-        this.intakeUntil(()->this.hasPeice());
+        this.intakeUntil(()->this.hasPiece());
     }
 
     public void startBackrun(){
     }
     /**
-     * sets the intake state to intake untill trigger returns true 
+     * sets the intake state to intake until trigger returns true 
      * @param trigger the supplier that will stop the intake when it returns true
     */
     public void intakeUntil(BooleanSupplier trigger){
@@ -44,13 +44,13 @@ public abstract class intakeIO extends SubsystemBase{
 		stopTrigger=trigger;
     }
 
-    /**sets the intake state to outtake until the peice is outtaked*/
+    /**sets the intake state to outtake until the piece is outtaked*/
     public void outtake(){
-        this.outtakeUntil(()->!this.hasPeice());
+        this.outtakeUntil(()->!this.hasPiece());
     };
 
     /**
-     * outtakes untill the trigger returns true
+     * outtakes until the trigger returns true
      * @param trigger the supplier that will stop the intake when it returns true
      */
     public void outtakeUntil(BooleanSupplier trigger){
@@ -75,15 +75,15 @@ public abstract class intakeIO extends SubsystemBase{
         
         Rotation2d rotation = SystemManager.wrist.getCurrentLocationR2D();
         return new Translation3d(
-            Math.sin(-rotation.getRadians()+Math.toRadians(20))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLenght/2,
+            Math.sin(-rotation.getRadians()+Math.toRadians(20))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLength/2,
             0,
             Math.cos(-rotation.getRadians()+Math.toRadians(20))*Constants.intakeConstants.coralFromWristLen)
             
             .plus(SystemManager.elevator.getTranslation());    
     }
 
-    /**@return wether or not the intake currently contains a peice.*/
-    public abstract boolean hasPeice();
+    /**@return wether or not the intake currently contains a piece.*/
+    public abstract boolean hasPiece();
     /**stops the intake */
     public abstract void stop();
    

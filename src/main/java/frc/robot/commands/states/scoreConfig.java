@@ -11,7 +11,7 @@ public class scoreConfig extends Command{
     protected reefLevel scoreLevel;
 
     /**
-     * Creates a command to configure mechs to specified level. DOES NOT ACTUALY OUTTAKE 
+     * Creates a command to configure mechanisms to specified level. DOES NOT ACTUALLY OUTTAKE 
      * @param level the level to configure
      */
     public scoreConfig(reefLevel level){
@@ -19,7 +19,7 @@ public class scoreConfig extends Command{
         addRequirements(generalManager.subsystems);
     }
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
         SystemManager.wrist.setSetpoint(scoreLevel.getWristVal());
@@ -32,7 +32,7 @@ public class scoreConfig extends Command{
     @Override 
     public void execute(){
         if (generalManager.getStateCommand()!=this){
-            warningManager.throwAlert(warningManager.generalRoutineCalledManualy);
+            warningManager.throwAlert(warningManager.generalRoutineCalledManually);
             cancel();
         }
     }
@@ -46,10 +46,10 @@ public class scoreConfig extends Command{
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasInterupted){
-        generalManager.endCallback(wasInterupted);
+    public void end(boolean wasInterrupted){
+        generalManager.endCallback(wasInterrupted);
     }
 }

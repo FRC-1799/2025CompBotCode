@@ -13,7 +13,7 @@ public class realIntake extends intakeIO{
 	SparkMax intakeBottom = new SparkMax(Constants.intakeConstants.bottomIntake, MotorType.kBrushless);
 	DigitalInput frontBeambrake = new DigitalInput(Constants.intakeConstants.frontBeamBrakePort);
 	DigitalInput backBeambrake = new DigitalInput(Constants.intakeConstants.backBeamBrakePort);
-	hasPeiceState peiceState=hasPeiceState.full;
+	hasPieceState pieceState=hasPieceState.full;
 	
 
 	
@@ -21,56 +21,51 @@ public class realIntake extends intakeIO{
 	public realIntake() {
 	}
 
-	// @Override
-	// public void backRun(){
-	// 	this.state=intakeState.backRun;
-	// 	//this.stopTrigger=()->fron
-	// }
 
 	@Override
-	public boolean hasPeice() {
-		SmartDashboard.putBoolean("HasPeiceChecked", true);
-		return peiceState==hasPeiceState.full;
+	public boolean hasPiece() {
+		SmartDashboard.putBoolean("HasPieceChecked", true);
+		return pieceState==hasPieceState.full;
 	}
 	
 	public void checkForPiece(){
 
 		//starting
-		if (peiceState==hasPeiceState.starting){
+		if (pieceState==hasPieceState.starting){
 			if(!frontBeambrake.get()){
-				peiceState=hasPeiceState.full;
+				pieceState=hasPieceState.full;
 			}
 			else{
-				peiceState=hasPeiceState.empty;
+				pieceState=hasPieceState.empty;
 			}
 		}
 
 		//empty
-		else if (peiceState==hasPeiceState.empty){
+		else if (pieceState==hasPieceState.empty){
 			if (!backBeambrake.get()){
-				peiceState=hasPeiceState.intaking;
+				pieceState=hasPieceState.intaking;
 			}
 		}
 
-		//intakeing
-		else if(peiceState==hasPeiceState.intaking){
+		//intaking
+		else if(pieceState==hasPieceState.intaking){
 
 
 			if (backBeambrake.get()){
 				if (!frontBeambrake.get()){
-					peiceState=hasPeiceState.full;
+					pieceState=hasPieceState.full;
 				}
 				else{
-					peiceState=hasPeiceState.empty;
+					pieceState=hasPieceState.empty;
 				}
 
 			}
 		}
 
 		//full
-		else if(peiceState==hasPeiceState.full){
+		else if(pieceState==hasPieceState.full){
 			if(frontBeambrake.get()){
-				peiceState=hasPeiceState.empty;
+				pieceState=hasPieceState.empty;
 			}
 		}
 	}
@@ -86,7 +81,7 @@ public class realIntake extends intakeIO{
 		checkForPiece();
 		if (stopTrigger.getAsBoolean()){
 
-			SmartDashboard.putBoolean("stopSucceded", true);
+			SmartDashboard.putBoolean("stopSucceeded", true);
 			state=intakeState.resting;
 		    stop();					   // Stop Intake Motor
 		}
@@ -111,7 +106,7 @@ public class realIntake extends intakeIO{
 			intakeBottom.set(0);
 		}
 		SmartDashboard.putString("intakeState", state.name());
-		SmartDashboard.putString("hasPeiceState", peiceState.name());
+		SmartDashboard.putString("hasPieceState", pieceState.name());
 		SmartDashboard.putBoolean("frontBeamBreak", frontBeambrake.get());
 		SmartDashboard.putBoolean("backBeamBreak", backBeambrake.get());
 	}

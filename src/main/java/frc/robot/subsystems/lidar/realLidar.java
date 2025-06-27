@@ -37,7 +37,7 @@ public class realLidar implements lidarInterface{
 
 
     @Override
-    public List<Pair<Translation2d, Translation2d>> fetchObsticles() {
+    public List<Pair<Translation2d, Translation2d>> fetchObstacles() {
         Pose2d[] poses = hitboxes.get();
         Translation2d toTopRight = new Translation2d(nodeSideLen.get(), nodeSideLen.get());
         List<Pair<Translation2d,Translation2d>> hitboxReturn = new LinkedList<Pair<Translation2d, Translation2d>>();

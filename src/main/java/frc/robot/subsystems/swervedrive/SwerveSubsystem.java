@@ -144,7 +144,7 @@ public class SwerveSubsystem extends SubsystemBase
 //   }
 
   public ModuleConfig getPathplannerStyleConfig(){
-    return new ModuleConfig(Constants.driveConstants.wheelRadusInMeters, /**Constants.driveConstants.maxSpeed*/5, 1, DCMotor.getKrakenX60(1), 60, 1);
+    return new ModuleConfig(Constants.driveConstants.wheelRadiusInMeters, /**Constants.driveConstants.maxSpeed*/5, 1, DCMotor.getKrakenX60(1), 60, 1);
   }
 
   @Override
@@ -397,9 +397,9 @@ public class SwerveSubsystem extends SubsystemBase
    * the wheel velocities.  Also has field- and robot-relative modes, which affect how the translation vector is used.
    *
    * @param translation   {@link Translation2d} that is the commanded linear velocity of the robot, in meters per
-   *                      second. In robot-relative mode, positive x is torwards the bow (front) and positive y is
-   *                      torwards port (left).  In field-relative mode, positive x is away from the alliance wall
-   *                      (field North) and positive y is torwards the left wall when looking through the driver station
+   *                      second. In robot-relative mode, positive x is towards the bow (front) and positive y is
+   *                      towards port (left).  In field-relative mode, positive x is away from the alliance wall
+   *                      (field North) and positive y is towards the left wall when looking through the driver station
    *                      glass (field West).
    * @param rotation      Robot angular rate, in radians per second. CCW positive.  Unaffected by field/robot
    *                      relativity.
@@ -417,7 +417,7 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * drive command used for small auto drive. While it can be used outside of that its kinda jank and the other drives should be used instead
    * @param speed The speed at which the robot should drive from -1 to 1.
-   * @param driveAngle the angle that the robot should drive twords.
+   * @param driveAngle the angle that the robot should drive towards.
    * @param rotationGoal the rotation that the robot should try and acheave
    */
   public void drive(double speed, Rotation2d driveAngle, Rotation2d rotationGoal){
@@ -466,22 +466,22 @@ public class SwerveSubsystem extends SubsystemBase
     }
 
     if (SystemManager.aprilTag.getFrontPose()!=null){
-      SmartDashboard.putBoolean("FrontVisonAdding", true);
+      SmartDashboard.putBoolean("FrontVisionAdding", true);
 
       swerveDrive.addVisionMeasurement(SystemManager.aprilTag.getFrontPose().toPose2d(),SystemManager.aprilTag.getFrontTimestamp());
     }
     else{
-      SmartDashboard.putBoolean("FrontVisonAdding", false);
+      SmartDashboard.putBoolean("FrontVisionAdding", false);
 
     }
 
 
     SmartDashboard.putBoolean("saw front camera", SystemManager.aprilTag.getFrontPose()!=null);
     SmartDashboard.putBoolean("saw back camera", SystemManager.aprilTag.getBackPose()!=null);
-    SmartDashboard.putNumber("recived front camera timestamp", SystemManager.aprilTag.getFrontTimestamp());
+    SmartDashboard.putNumber("received front camera timestamp", SystemManager.aprilTag.getFrontTimestamp());
     SystemManager.aprilTag.getBackTimestamp();
     if (SystemManager.lidar!=null){
-      Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObsticles(), swerveDrive.getPose().getTranslation());
+      Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
     }
 
     SmartDashboard.putNumber("swerve timestamp", Timer.getFPGATimestamp());
@@ -575,7 +575,7 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * This will zero (calibrate) the robot to assume the current position is facing forward
    * <p>
-   * If red alliance rotate the robot 180 after the drviebase zero command
+   * If red alliance rotate the robot 180 after the drivebase zero command
    */
   public void zeroGyroWithAlliance()
   {

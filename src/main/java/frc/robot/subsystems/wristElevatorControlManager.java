@@ -7,7 +7,7 @@ import frc.robot.subsystems.wrist.wristIO;
 public class wristElevatorControlManager{
 
 
-    public enum wristElevatorControllState{
+    public enum wristElevatorControlState{
         wrist,
         elevator,
         fixWrist,
@@ -16,15 +16,15 @@ public class wristElevatorControlManager{
     }
 
 
-    protected static wristElevatorControllState state = wristElevatorControllState.resting;
+    protected static wristElevatorControlState state = wristElevatorControlState.resting;
     protected static wristIO wrist;
     protected static elevatorIO elevator;
 
     
 
 
-    /**@return the current state in terms of a wristElevatorControllState*/
-    public static wristElevatorControllState getState(){
+    /**@return the current state in terms of a wristElevatorControlState*/
+    public static wristElevatorControlState getState(){
         return state;
     }
 
@@ -35,73 +35,73 @@ public class wristElevatorControlManager{
     }
 
 
-    /**Updates the wrist elevevator manager. should be called every rio cycle */
+    /**Updates the wrist elevator manager. should be called every rio cycle */
     public static void periodic(){
         if (wrist==null||elevator==null){
             return;
         }
 
         //elevator state
-        if (state == wristElevatorControllState.elevator){
+        if (state == wristElevatorControlState.elevator){
             if (!wrist.atLegalNonControlState()){
-                state=wristElevatorControllState.fixWrist;
+                state=wristElevatorControlState.fixWrist;
             }
             if (elevator.isAtSetpoint()){
                 if (wrist.isAtSetpoint()){
-                    state=wristElevatorControllState.resting;
+                    state=wristElevatorControlState.resting;
                 }
                 else{
-                    state=wristElevatorControllState.wrist;
+                    state=wristElevatorControlState.wrist;
                 }
             }
         }
 
         //wrist state
-        else if(state==wristElevatorControllState.wrist){
+        else if(state==wristElevatorControlState.wrist){
             if(!elevator.atLegalNonControlState()&&wrist.getSetpoint().getDegrees()!=0){
-                state=wristElevatorControllState.fixElevator;
+                state=wristElevatorControlState.fixElevator;
             }
             if(!elevator.isAtSetpoint()){
                 if (wrist.atLegalNonControlState()){
-                    state=wristElevatorControllState.fixWrist;
+                    state=wristElevatorControlState.fixWrist;
                 }
                 else{
-                    state=wristElevatorControllState.elevator;
+                    state=wristElevatorControlState.elevator;
                 }
             }
 
             if (wrist.isAtSetpoint()){
-                state=wristElevatorControllState.resting;
+                state=wristElevatorControlState.resting;
             }
         }
 
 
         //fix elevator state
-        else if(state==wristElevatorControllState.fixElevator){
+        else if(state==wristElevatorControlState.fixElevator){
             if (elevator.atLegalNonControlState()){
-                state=wristElevatorControllState.resting;
+                state=wristElevatorControlState.resting;
             }
         }
 
         //fix wrist state
-        else if(state==wristElevatorControllState.fixWrist){
+        else if(state==wristElevatorControlState.fixWrist){
             if(wrist.atLegalNonControlState()){
-                state=wristElevatorControllState.resting;
+                state=wristElevatorControlState.resting;
             }
         }
 
         //resting state
-        else if (state==wristElevatorControllState.resting){
+        else if (state==wristElevatorControlState.resting){
             if (!elevator.isAtSetpoint()){
                 if (!wrist.atLegalNonControlState()){
-                    state=wristElevatorControllState.fixWrist;
+                    state=wristElevatorControlState.fixWrist;
                 }
                 else{
-                    state=wristElevatorControllState.elevator;
+                    state=wristElevatorControlState.elevator;
                 }
             }
             else if(!wrist.isAtSetpoint()){
-                state=wristElevatorControllState.wrist;
+                state=wristElevatorControlState.wrist;
             }
         }
 

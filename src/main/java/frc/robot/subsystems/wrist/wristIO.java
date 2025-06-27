@@ -19,7 +19,7 @@ public class wristIO extends SubsystemBase{
     
     /**@return wether or not the wrist is within tolerence from its current setpoint */
     public boolean isAtSetpoint(){
-        return Math.abs(setpoint-getCurrentLocation())<Constants.wristConstants.tolerence;
+        return Math.abs(setpoint-getCurrentLocation())<Constants.wristConstants.tolerance;
     }
     
     /**@return the current lcoation in degrees*/
@@ -45,6 +45,6 @@ public class wristIO extends SubsystemBase{
 
     /**@return wether or not the wrist is at a position at which the elevator can safely move */
     public boolean atLegalNonControlState(){
-        return Math.abs(getCurrentLocation())<Constants.wristConstants.tolerence;
+        return Math.abs(getCurrentLocation())<Constants.wristConstants.tolerance;
     }
 }

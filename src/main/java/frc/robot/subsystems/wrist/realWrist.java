@@ -25,7 +25,7 @@ public class realWrist extends wristIO{
     
 
     public realWrist(){
-        wristPID.setTolerance(Constants.wristConstants.tolerence);
+        wristPID.setTolerance(Constants.wristConstants.tolerance);
         
         
         
@@ -34,8 +34,8 @@ public class realWrist extends wristIO{
     @Override
     public void periodic(){
 
-        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.wrist||
-            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.resting){     
+        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.wrist||
+            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.resting){     
             goal=setpoint;
         }
 

@@ -14,7 +14,7 @@ public class simLidar implements lidarInterface{
     
 
     @Override
-    public List<Pair<Translation2d, Translation2d>> fetchObsticles() {
+    public List<Pair<Translation2d, Translation2d>> fetchObstacles() {
         List<Pair<Translation2d, Translation2d>> obstacles = new ArrayList<>();
 
         if(!(isAlive()&&isConnected())){

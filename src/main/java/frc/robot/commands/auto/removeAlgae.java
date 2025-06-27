@@ -5,13 +5,13 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
-import frc.robot.FieldPosits.reefLevel.algeaRemoval;
-import frc.robot.Utils.utillFunctions;
+import frc.robot.FieldPosits.reefLevel.algaeRemovalEnum;
+import frc.robot.Utils.utilFunctions;
 import frc.robot.subsystems.generalManager;
 
 
 public class removeAlgae extends Command{
-    algeaRemoval posit;
+    algaeRemovalEnum posit;
     boolean mechIsFinished=false;
     Command driveCommand;
     Command mechCommand;
@@ -20,19 +20,19 @@ public class removeAlgae extends Command{
 
 
     /**
-     * scores a peice at the defined scoring posit
+     * scores a piece at the defined scoring posit
      * @param posit the posit to score
      */
-    public removeAlgae(algeaRemoval posit){
+    public removeAlgae(algaeRemovalEnum posit){
         this.posit=posit;
         
     }
 
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
-        //sets the mechs to the proper score state
+        //sets the mechanisms to the proper score state
         generalManager.algaeConfig(posit.isLow);
 
         //starts auto drive
@@ -44,7 +44,7 @@ public class removeAlgae extends Command{
         generalManager.setExternalEndCallback(this::mechIsFinishedCall);
         
 
-        //reinitalizes state booleans used
+        //reinitializes state booleans used
         mechIsFinished=false;
         hasSpit=false;
         driveIsFinished=false;
@@ -56,10 +56,10 @@ public class removeAlgae extends Command{
     public void execute() {
         //restarts the drive command if it finished early
         if (!driveCommand.isScheduled()){
-            if (utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getPose().getX(), SystemManager.getSwervePose().getY(), posit.getPose().getY())
-                >=Constants.AutonConstants.autoDriveScoreTolerence){
+            if (utilFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getPose().getX(), SystemManager.getSwervePose().getY(), posit.getPose().getY())
+                >=Constants.AutonConstants.autoDriveScoreTolerance){
                 if (
-                    utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getPose().getX(),
+                    utilFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getPose().getX(),
                     SystemManager.getSwervePose().getY(), posit.getPose().getY())
                     <=Constants.AutonConstants.distanceWithinPathplannerDontWork){
 
@@ -73,7 +73,7 @@ public class removeAlgae extends Command{
         }
 
 
-        //starts outtake if relevent
+        //starts outtake if relevant
         if (mechIsFinished&&driveIsFinished){
             generalManager.algaeRemove();
             generalManager.setExternalEndCallback(this::intakeIsFinishedCall);
@@ -84,10 +84,10 @@ public class removeAlgae extends Command{
    
      /**
      * function to be called when the mech is in its proper state
-     * @param wasInterupted wether or not the intake routine was cancled
+     * @param wasInterrupted wether or not the intake routine was canceled
      */
-    public void mechIsFinishedCall(boolean wasInterupted){
-        if (wasInterupted){
+    public void mechIsFinishedCall(boolean wasInterrupted){
+        if (wasInterrupted){
             cancel();
         }
 
@@ -96,14 +96,14 @@ public class removeAlgae extends Command{
 
     /**
      * function to be called when the outtake has happened
-     * @param wasInterupted wether or not the intake routine was cancled
+     * @param wasInterrupted wether or not the intake routine was canceled
      */
-    public void intakeIsFinishedCall(boolean wasInterupted){
+    public void intakeIsFinishedCall(boolean wasInterrupted){
         hasSpit=true;
     }
 
     /**
-     * @return true once the peice has been outtaked
+     * @return true once the piece has been outtaked
      */
     @Override
     public boolean isFinished(){
@@ -113,16 +113,16 @@ public class removeAlgae extends Command{
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasInterupted){
+    public void end(boolean wasInterrupted){
         if (driveCommand.isScheduled()){
             driveCommand.cancel();
             
         }
-        if (!wasInterupted){
-            SystemManager.reefIndexer.freeAlgea(posit.getRow(), posit.getLevel());
+        if (!wasInterrupted){
+            SystemManager.reefIndexer.freeAlgae(posit.getRow(), posit.getLevel());
         }
 
         

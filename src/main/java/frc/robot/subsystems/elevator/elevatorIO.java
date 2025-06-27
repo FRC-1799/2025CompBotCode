@@ -42,19 +42,19 @@ public abstract class elevatorIO extends SubsystemBase {
         setSetpointRaw(setpoint);
     };
 
-    /**@return wether or not the elevator is within tolerence of its setpoint*/
+    /**@return wether or not the elevator is within tolerance of its setpoint*/
     public boolean isAtSetpoint(){
-        return Math.abs(setpoint-getHeight())<Constants.elevatorConstants.tolerence;
+        return Math.abs(setpoint-getHeight())<Constants.elevatorConstants.tolerance;
     };
 
-    /**@return the 3d translation from the botom of the elevator to the current point. all mesurments use the rotation point of the wrist for consistency*/
+    /**@return the 3d translation from the bottom of the elevator to the current point. all measurements use the rotation point of the wrist for consistency*/
     public Translation3d getTranslation(){
         return new Translation3d(getHeight()*Math.cos(Constants.elevatorConstants.angle.getRadians()), 0, getHeight()*Math.sin(Constants.elevatorConstants.angle.getRadians())).plus(Constants.elevatorConstants.fromRobotCenter);
     };
 
 
 
-    /**@return the height of the elevator in meters. all measurments use the rotation point of the wrist for consistency*/
+    /**@return the height of the elevator in meters. all measurements use the rotation point of the wrist for consistency*/
     public double getHeight(){
         return this.getEncoderVal()/Constants.elevatorConstants.encoderToMeters;
     };
@@ -65,14 +65,14 @@ public abstract class elevatorIO extends SubsystemBase {
     };
 
     public boolean isAtTop(){
-        return Math.abs(getHeight()-Constants.elevatorConstants.maxHeight)<Constants.elevatorConstants.tolerence;
+        return Math.abs(getHeight()-Constants.elevatorConstants.maxHeight)<Constants.elevatorConstants.tolerance;
 
     }
 
 
     /**@return true if the elevator is at a point in which the wrist can move without breaking anything */
     public boolean atLegalNonControlState(){
-        return Math.abs(getHeight()-Constants.elevatorConstants.maxHeight)<Constants.elevatorConstants.tolerence;
+        return Math.abs(getHeight()-Constants.elevatorConstants.maxHeight)<Constants.elevatorConstants.tolerance;
     }
 
     /**updates the internal mechanism  */

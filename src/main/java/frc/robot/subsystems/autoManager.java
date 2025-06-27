@@ -23,10 +23,10 @@ import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
 import frc.robot.FieldPosits.reefLevel;
 import frc.robot.FieldPosits.reefPole;
-import frc.robot.FieldPosits.reefLevel.algeaRemoval;
+import frc.robot.FieldPosits.reefLevel.algaeRemovalEnum;
 import frc.robot.Utils.scoringPosit;
-import frc.robot.Utils.utillFunctions;
-import frc.robot.commands.auto.IntakePeiceCommand;
+import frc.robot.Utils.utilFunctions;
+import frc.robot.commands.auto.IntakePieceCommand;
 import frc.robot.commands.auto.ScorePiece;
 
 import frc.robot.commands.auto.spin;
@@ -37,7 +37,7 @@ import frc.robot.commands.auto.removeAlgae;
 public class autoManager{
 
     public static boolean hasControl=false;
-    public static BooleanSupplier hasControllSupplier=null;
+    public static BooleanSupplier hasControlSupplier=null;
     public static Command currentRoutine=null;
     public static LocalADStar pathBuilder = new LocalADStar();
     public static Node[][] map;
@@ -52,7 +52,7 @@ public class autoManager{
     protected static StructPublisher<Pose2d> bestPosePublisher = NetworkTableInstance.getDefault().getStructTopic("bestPose", Pose2d.struct).publish();
 
 
-    /**initalizes the auto manager. this mmust be called before the auto manager is used */
+    /**initializes the auto manager. this must be called before the auto manager is used */
     public static void autoManagerInit() {
         try{
             jsonMap = (JSONObject) new JSONParser().parse(new FileReader(Filesystem.getDeployDirectory()+ "/pathplanner/navgridAStar.json"));
@@ -80,7 +80,7 @@ public class autoManager{
             }
         }
 
-        map[0][0].popFreinds();
+        map[0][0].popFriends();
         
     }
 
@@ -98,9 +98,9 @@ public class autoManager{
         }
 
 
-        if (hasControllSupplier!=null){
-            if (hasControllSupplier.getAsBoolean()!=hasControl){
-                if (hasControllSupplier.getAsBoolean()==false){
+        if (hasControlSupplier!=null){
+            if (hasControlSupplier.getAsBoolean()!=hasControl){
+                if (hasControlSupplier.getAsBoolean()==false){
                     takeControl();
                 }
                 else{
@@ -157,13 +157,13 @@ public class autoManager{
      * sets a supplier that the auto manager will use to determine if it has control. Note if this function is used the giveControl and take control methods may not work as intended.
      * @param supplier the supplier to determine wether the auto manager has control
      */
-    public static void setControlBooleanSuplier(BooleanSupplier supplier){
-        hasControllSupplier=supplier;    
+    public static void setControlBooleanSupplier(BooleanSupplier supplier){
+        hasControlSupplier=supplier;    
     }
 
 
     /**
-     * resets the internal A* map and recalcs paths using the starting pose
+     * resets the internal A* map and recalculates paths using the starting pose
      * @param startingPose the pose to start the pathplanner on
      */
     protected static void resetMap(Pose2d startingPose){
@@ -213,7 +213,7 @@ public class autoManager{
 
     /** @return the best auto action to take at the frame called in the form of a command*/
     public static Command getAutoAction(){
-        if (SystemManager.intake.hasPeice()){
+        if (SystemManager.intake.hasPiece()){
 
             scoringPosit scorePose = getBestScorePosit();
             if (scorePose==null){
@@ -221,10 +221,10 @@ public class autoManager{
             }
 
            
-            if (SystemManager.reefIndexer.blockedByAlgae((int)scorePose.pole.getRowAsIndex(), scorePose.level.getasInt())){
+            if (SystemManager.reefIndexer.blockedByAlgae((int)scorePose.pole.getRowAsIndex(), scorePose.level.getAsInt())){
                 
-                return new removeAlgae(algeaRemoval.makeFromNumbers((int)(scorePose.pole.getRowAsIndex())/2, (int)SystemManager.reefIndexer.getAlgaeLevel(scorePose.pole.getRowAsIndex()/2)-1));
-                //return new removeAlgae(algeaRemoval.makeFromNumbers((int)(scorePose.pole.getRowAsIndex())/2+1, (int)SystemManager.reefIndexer.getAlgaeLevel((int)(scorePose.pole.getRowAsIndex()/2))-1));
+                return new removeAlgae(algaeRemovalEnum.makeFromNumbers((int)(scorePose.pole.getRowAsIndex())/2, (int)SystemManager.reefIndexer.getAlgaeLevel(scorePose.pole.getRowAsIndex()/2)-1));
+                //return new removeAlgae(algaeRemoval.makeFromNumbers((int)(scorePose.pole.getRowAsIndex())/2+1, (int)SystemManager.reefIndexer.getAlgaeLevel((int)(scorePose.pole.getRowAsIndex()/2))-1));
             }
             return new ScorePiece(scorePose);
 
@@ -234,7 +234,7 @@ public class autoManager{
             if (intakePosit==null){
                 return new spin();
             }
-            return new IntakePeiceCommand(intakePosit);
+            return new IntakePieceCommand(intakePosit);
         }
 
     }
@@ -269,12 +269,7 @@ public class autoManager{
         if (winningPole!=null){
             bestPosePublisher.set(winningPole.getScorePose());
         }
-        // SmartDashboard.putNumber("winningPositScore", getMapPoint(winningPole.getScorePose()).score);
-        // SmartDashboard.putBoolean("winningLegality", getMapPoint(winningPole.getScorePose()).isLegal);
-        // SmartDashboard.putBoolean("winning posit had freinds", getMapPoint(winningPole.getScorePose()).friendsPoped);
-        //SmartDashboard.putNumber("scoring level", winningPole.level.getasInt());
-        //SmartDashboard.putNumber("highest open", SystemManager.reefIndexer.getHighestLevelForRow(winningPole.pole.getRowAsIndex()));
-        //SmartDashboard.putBoolean("l4 is closed", SystemManager.reefIndexer.getIsClosed(winningPole.pole.getRowAsIndex(), 3));
+
         return winningPole;
 
     }
@@ -308,7 +303,7 @@ public class autoManager{
 
     public static int getHighestLevelWithGuiIntegrated(int level){
         boolean[] reefArr=SystemManager.reefIndexer.getFullReefState()[level];
-        boolean[] guiArr = utillFunctions.flipBoolArray(SystemManager.coralArray.getGUIArray())[level];
+        boolean[] guiArr = utilFunctions.flipBoolArray(SystemManager.coralArray.getGUIArray())[level];
         for (int i=3; i>=0;i--){
             if (!reefArr[i]&&guiArr[i]){
                 return i+1;
@@ -329,8 +324,8 @@ public class autoManager{
         Node[][] host;
         boolean isLegal;
         double score=defaultValue;
-        Node[] Freinds = new Node[8];
-        boolean friendsPoped=false;
+        Node[] Friends = new Node[8];
+        boolean friendsPopped=false;
 
 
         /**
@@ -358,8 +353,8 @@ public class autoManager{
 
         }
 
-        /**populates this node with its freinds. this function is recursive and so can generate the entire grid out of just one call */
-        public void popFreinds(){
+        /**populates this node with its friends. this function is recursive and so can generate the entire grid out of just one call */
+        public void popFriends(){
             friendCount++;
             SmartDashboard.putNumber("friendCount", friendCount);
             
@@ -373,16 +368,16 @@ public class autoManager{
                     int b = (int)(y*tileSize)+j;
                     if (a>=0 && a<map.length){
                         if (b>=0&& b<map[1].length){
-                            Freinds[count]=map[a][b];  
+                            Friends[count]=map[a][b];  
                         }
 
                         else{
-                            Freinds[count]=null;
+                            Friends[count]=null;
                         }
                     }
 
                     else{
-                        Freinds[count]=null;
+                        Friends[count]=null;
                     }
 
                     count++;
@@ -391,22 +386,22 @@ public class autoManager{
             }
             
             
-            friendsPoped=true;
-            for (Node friend: Freinds){
+            friendsPopped=true;
+            for (Node friend: Friends){
                 if (friend!=null){
-                    if (!friend.friendsPoped){
-                        friend.popFreinds();
+                    if (!friend.friendsPopped){
+                        friend.popFriends();
                     }
                 }
             }
         }
 
-        /**updates this node based off its freind list */
+        /**updates this node based off its friend list */
         public void update(){
             updateCount++;
             
             
-            for (Node friend: Freinds){
+            for (Node friend: Friends){
                 if (friend!=null&&friend.isLegal){
                     
                     if (friend.score>score+getLength(this, friend)){
@@ -421,13 +416,13 @@ public class autoManager{
         }
 
         /**
-         * A handy function to make the calcualtion of the distance between two points easer
+         * A handy function to make the calculation of the distance between two points easer
          * @param nodeA the first node
          * @param NodeB the second node
          * @return The distance between the two nodes
          */
         public static double getLength(Node nodeA, Node NodeB){
-            return utillFunctions.pythagorean(nodeA.x, NodeB.x, nodeA.y, NodeB.y);
+            return utilFunctions.pythagorean(nodeA.x, NodeB.x, nodeA.y, NodeB.y);
         }
 
         /**starts a pathplanning algorithm using this node as the starting point */

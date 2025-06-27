@@ -14,8 +14,8 @@ public class simWrist extends wristIO{
     public void periodic(){
 
         if (
-            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.wrist||
-            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.resting){
+            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.wrist||
+            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.resting){
             goal=setpoint;
         }
         else{

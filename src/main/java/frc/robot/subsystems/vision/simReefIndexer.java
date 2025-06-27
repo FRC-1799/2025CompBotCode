@@ -14,11 +14,11 @@ public class simReefIndexer extends reefIndexerIO{
      
 
      int heartBeat=0;
-     final boolean[][] algaeSorce={{true,false},{false,true},{true,false},{false,true},{true,false},{false,true}};;
-     boolean[][] algae = algaeSorce;
+     final boolean[][] algaeSource={{true,false},{false,true},{true,false},{false,true},{true,false},{false,true}};;
+     boolean[][] algae = algaeSource;
 
 
-        StructArrayPublisher<Pose3d> algeaPublisher = NetworkTableInstance.getDefault()
+        StructArrayPublisher<Pose3d> algaePublisher = NetworkTableInstance.getDefault()
     .getStructArrayTopic("reefAlgae", Pose3d.struct).publish();
 
     public simReefIndexer(){
@@ -39,7 +39,7 @@ public class simReefIndexer extends reefIndexerIO{
                 
             }
         }
-        algeaPublisher.set(algaeRender);
+        algaePublisher.set(algaeRender);
     }
 
 
@@ -78,13 +78,13 @@ public class simReefIndexer extends reefIndexerIO{
 
 
     @Override 
-    public boolean[][] getAlgeaPosits(){
+    public boolean[][] getAlgaePosits(){
         
         return algae;
     }
 
     @Override
-    public void freeAlgea(int row, int level){
+    public void freeAlgae(int row, int level){
 
         algae[row][level]=false;
     }

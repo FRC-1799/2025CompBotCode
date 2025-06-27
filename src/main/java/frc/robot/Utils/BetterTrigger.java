@@ -18,8 +18,8 @@ public class BetterTrigger extends Trigger{
    
     /**
      * creates a trigger object that fixes some of the internal jank in the original WPIlib trigger
-     * @param loop the loop that this trigger should attacht too
-     * @param condition the condition this trigger will use internaly
+     * @param loop the loop that this trigger should attached too
+     * @param condition the condition this trigger will use internally
      */
     public BetterTrigger(EventLoop loop, BooleanSupplier condition) {
         super(loop, condition);
@@ -39,7 +39,7 @@ public class BetterTrigger extends Trigger{
 
 
   /**
-   * Starts the command whenever the condition is true and the command isnt running. The command will be cancled whenever the trigger changes to false.
+   * Starts the command whenever the condition is true and the command isn't running. The command will be canceled whenever the trigger changes to false.
    * Will restart the command if it ends and the condition is still true
    * @param command the command to start
    * @return this trigger, so calls can be chained
@@ -68,7 +68,7 @@ public class BetterTrigger extends Trigger{
 
  
   /**
-   * Starts the command whenever the condition is false and the command isnt running. The command will be cancled whenever the trigger changes to true.
+   * Starts the command whenever the condition is false and the command isn't running. The command will be canceled whenever the trigger changes to true.
    * Will restart the command if it ends and the condition is still false.
    * @param command the command to start.
    * @return this trigger, so calls can be chained.
