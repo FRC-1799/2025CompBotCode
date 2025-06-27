@@ -140,4 +140,9 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
         freeAlgaePublisher.set(algaeRowValues);
 
     }
+
+    @Override
+    public void resetSIMONLY() {
+        throw new UnsupportedOperationException("Unimplemented method 'resetSIMONLY'");
+    }
 }
