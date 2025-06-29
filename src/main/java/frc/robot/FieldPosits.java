@@ -81,7 +81,7 @@ public class FieldPosits {
         };
     }
 
-    public static class algeaStuff{
+    public static class algaeScoringPoses{
         public static final Translation2d highTrans = new Translation2d();
         public static final Translation2d lowTrans = new Translation2d();
         public static final Pose2d A = new Pose2d(3.2, 4.027, Rotation2d.fromDegrees(180));
@@ -371,17 +371,17 @@ public class FieldPosits {
                 }
                 switch (side){
                     case 0:
-                        return algeaStuff.A;
+                        return algaeScoringPoses.A;
                     case 1:
-                        return algeaStuff.B;
+                        return algaeScoringPoses.B;
                     case 2:
-                        return algeaStuff.C;
+                        return algaeScoringPoses.C;
                     case 3:
-                        return algeaStuff.D;
+                        return algaeScoringPoses.D;
                     case 4:
-                        return algeaStuff.E;
+                        return algaeScoringPoses.E;
                     case 5:
-                        return algeaStuff.F;
+                        return algaeScoringPoses.F;
                     default:
                         throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
                 }
