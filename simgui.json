@@ -72,6 +72,7 @@
       "/SmartDashboard/SendableChooser[2]": "String Chooser",
       "/SmartDashboard/Swerve Drive": "Alerts",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
+      "/SmartDashboard/auto chooser": "String Chooser",
       "/SmartDashboard/elevator": "Mechanism2d",
       "/SmartDashboard/wrist": "Mechanism2d"
     },

@@ -13,9 +13,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
 import frc.robot.subsystems.wristElevatorControlManager;
+import frc.robot.subsystems.AlgaeRemover.algaeRemoverInterface;
+import frc.robot.subsystems.AlgaeRemover.realAlgaeRemover;
+import frc.robot.subsystems.AlgaeRemover.simAlgaeRemover;
+import frc.robot.subsystems.CoralGUI.compassGUI;
+import frc.robot.subsystems.CoralGUI.coralGUI;
 import frc.robot.subsystems.blinkin.blinkinInterface;
-import frc.robot.subsystems.blinkin.realBlinkin;
-import frc.robot.subsystems.blinkin.simBlinkin;
 import frc.robot.subsystems.elevator.elevatorIO;
 import frc.robot.subsystems.elevator.realElevator;
 import frc.robot.subsystems.elevator.simElevator;
@@ -23,20 +26,17 @@ import frc.robot.subsystems.intake.intakeIO;
 import frc.robot.subsystems.intake.realIntake;
 import frc.robot.subsystems.intake.simIntake;
 import frc.robot.subsystems.lidar.lidarInterface;
-import frc.robot.subsystems.lidar.simLidar;
 import frc.robot.subsystems.swervedrive.AIRobotInSimulation;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.realSimulatedDriveTrain;
 import frc.robot.subsystems.vision.aprilTagInterface;
 import frc.robot.subsystems.vision.photonSim;
 import frc.robot.subsystems.vision.realVision;
-import frc.robot.subsystems.CoralGUI.coralGUI;
 import frc.robot.subsystems.vision.reefIndexerIO;
 import frc.robot.subsystems.vision.simReefIndexer;
 import frc.robot.subsystems.wrist.realWrist;
 import frc.robot.subsystems.wrist.simWrist;
 import frc.robot.subsystems.wrist.wristIO;
-import frc.robot.subsystems.CoralGUI.coralGUI;  // Add the import for getCoralArray class
 
 public class SystemManager{
     public static SwerveSubsystem swerve;
@@ -54,12 +54,19 @@ public class SystemManager{
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
     public static blinkinInterface blinkin;
+    public static compassGUI compass;
+    public static Robot robot;
+
+    public static algaeRemoverInterface algaeRemover;
+
     
     // Add a Coral Array object for tracking
     public static coralGUI coralArray;
 
     /** Initializes the system manager along with all the systems on the robot */
-    public static void SystemManagerInit(){
+    public static void SystemManagerInit(Robot robotIn){
+        robot=robotIn;
+
         // creates the swerve drive. Due to the complexity of the swerve system, it handles simulation differently and does not need an if-else block
         swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),  "swerve"));
         swerve.resetOdometry(Constants.driveConstants.startingPosit);
@@ -71,16 +78,15 @@ public class SystemManager{
 
         // Initializes all the systems
         // Each block should initialize one system as either real or imaginary based on the constants value 
-        
-        // Intake
-        if (Constants.simConfigs.intakeShouldBeSim){
-            if (RobotBase.isReal()){
-                simButRealTrain = new realSimulatedDriveTrain();
+    
+            // Wrist
+            if (Constants.simConfigs.wristShouldBeSim){
+                wrist = new simWrist();
+            } else {
+                wrist = new realWrist();
             }
-            intake = new simIntake();
-        } else {
-            intake = new realIntake();
-        }
+
+
 
         // April tags
         if (Constants.simConfigs.aprilTagShouldBeSim){
@@ -97,12 +103,7 @@ public class SystemManager{
             elevator = new realElevator();
         }
 
-        // Wrist
-        if (Constants.simConfigs.wristShouldBeSim){
-            wrist = new simWrist();
-        } else {
-            wrist = new realWrist();
-        }
+
 
         // Reef indexer
         if (Constants.simConfigs.reefIndexerShouldBeSim){
@@ -115,19 +116,19 @@ public class SystemManager{
             }
         }
 
-        // Lidar
-        if (Constants.simConfigs.lidarShouldBeSim){
-            lidar = new simLidar();
-        } else {
-            // Lidar initialization if not sim
-        }
+        // //Lidar
+        // if (Constants.simConfigs.lidarShouldBeSim){
+        //     lidar = new simLidar();
+        // } else {
+        //     // Lidar initialization if not sim
+        // }
 
         // Blinkin
-        if(Constants.simConfigs.blinkinShouldBeSim){
-            blinkin = new simBlinkin();
-        } else {
-            blinkin = new realBlinkin();
-        }
+        // if(Constants.simConfigs.blinkinShouldBeSim){
+        //     blinkin = new simBlinkin();
+        // } else {
+        //     blinkin = new realBlinkin();
+        // }
 
         // Create an imaginary robot
         if (!RobotBase.isReal()){
@@ -135,14 +136,36 @@ public class SystemManager{
             fakeBot = AIRobotInSimulation.getRobotAtIndex(0);
             // Overrides the default simulation
         }
+        
 
-        // Initialize and distribute the managers
+        if (Constants.simConfigs.algaeRemoverShouldBeSim){
+            algaeRemover= new simAlgaeRemover();
+        }
+        else{
+            algaeRemover = new realAlgaeRemover();
+        }
+
+        // Intake
+        if (Constants.simConfigs.intakeShouldBeSim){
+            if (RobotBase.isReal()){
+                simButRealTrain = new realSimulatedDriveTrain();
+            }
+            intake = new simIntake();
+        } else {
+            intake = new realIntake();
+        }
+        
+
+        //inializes and distributes the managers
+
         wristElevatorControlManager.addSystems(wrist, elevator);
         generalManager.generalManagerInit();
         autoManager.autoManagerInit();
+        
 
         // Initialize Coral Array
         coralArray = new coralGUI();
+        compass = new compassGUI();
     }
 
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
@@ -150,6 +173,7 @@ public class SystemManager{
         wristElevatorControlManager.periodic();
         generalManager.periodic();
         autoManager.periodic();
+        reefIndexer.periodic();
     }
 
     /** @return the current pose of the robot */

@@ -9,6 +9,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -55,8 +56,13 @@ public class photonSim extends SubsystemBase implements aprilTagInterface{
 
     }
 
+    @Override
+    public Pose3d getFrontPose(){
+        return visionSim.getRobotPose();
+    }
 
-    public Pose3d getPose(){
+    @Override
+    public Pose3d getBackPose(){
         return visionSim.getRobotPose();
     }
 
@@ -64,5 +70,15 @@ public class photonSim extends SubsystemBase implements aprilTagInterface{
     @Override
     public void periodic(){
         visionSim.update(SystemManager.getRealPoseMaple());
+    }
+
+    @Override
+    public Double getFrontTimestamp() { 
+        return Timer.getFPGATimestamp();
+    }
+
+    @Override
+    public Double getBackTimestamp() {
+        return Timer.getFPGATimestamp();
     }
 }

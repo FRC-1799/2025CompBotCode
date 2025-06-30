@@ -1,7 +1,9 @@
 package frc.robot;
 
 
+import java.util.HashSet;
 import java.util.function.Consumer;
+
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,14 +13,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.FieldPosits.reefLevel;
+import frc.robot.FieldPosits.reefPole;
 import frc.robot.Utils.BetterTrigger;
+import frc.robot.Utils.scoringPosit;
 import frc.robot.Utils.utillFunctions;
+import frc.robot.commands.auto.IntakePeiceCommand;
+import frc.robot.commands.auto.ScorePiece;
 import frc.robot.commands.auto.smallAutoDrive;
-import frc.robot.commands.sim.CreateCoral;
+import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
@@ -52,6 +60,9 @@ public class ControlChooser {
         chooser.addOption("testControl", getTestControl());
         chooser.addOption("StandardXboxControl", standardXboxControl());
         chooser.addOption("demoControl", demoControl());
+        chooser.addOption("runAutoControl", runAutoDrive());
+        chooser.addOption("autoAlign", autoAlignControl());
+        chooser.addOption("stinkyControll", stinkyControl());
         
         
         chooser.onChange((EventLoop scheme)->{changeControl(scheme);});
@@ -109,20 +120,38 @@ public class ControlChooser {
             if(utillFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
        
-
-       
        xbox1.y(loop).onTrue(new InstantCommand(()->generalManager.scoreL4()));
        xbox1.x(loop).onTrue(new InstantCommand(()->generalManager.scoreL3()));
        xbox1.b(loop).onTrue(new InstantCommand(()->generalManager.scoreL2()));
        xbox1.a(loop).onTrue(new InstantCommand(()->generalManager.scoreL1()));
+       xbox1.leftBumper(loop).onTrue(new InstantCommand(()->generalManager.algaeConfig(false)));
+       xbox1.rightBumper(loop).onTrue(new InstantCommand(()->generalManager.algaeConfig(true)));
 
-       xbox1.leftTrigger(0.4, loop).onTrue(new CreateCoral("leftMid"));
        xbox1.rightTrigger(0.4,loop).onTrue(new InstantCommand(()->generalManager.intake()));
-       xbox1.leftBumper(loop).onTrue(new smallAutoDrive(Constants.driveConstants.startingPosit));
-       xbox1.rightBumper(loop).onTrue(new InstantCommand(()->generalManager.outtake()));
+       xbox1.rightStick(loop).onTrue(new InstantCommand(()->generalManager.outtake()));
+       xbox1.leftTrigger(0.4, loop).onTrue(new InstantCommand(()->generalManager.algaeRemove()));
 
         return loop;
     }
+
+    private EventLoop autoAlignControl(){
+        EventLoop loop = new EventLoop();
+
+        setDefaultCommand(new AbsoluteDriveAdv(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->xbox1.getRightX(), xbox1.pov(180), xbox1.pov(0), xbox1.pov(90), xbox1.pov(270))
+        ,SystemManager.swerve, loop);
+        
+        xbox2.a(loop).whileTrue(new DeferredCommand(()->new ScorePiece(new scoringPosit(reefLevel.CreateFromLevel(SystemManager.compass.getLevel()), reefPole.fromInt(SystemManager.compass.getPole()))), new HashSet<Subsystem>()));
+        xbox2.rightBumper(loop).whileTrue(new DeferredCommand(()->new IntakePeiceCommand(FieldPosits.IntakePoints.coralSpawnPoints[SystemManager.compass.getSlot()+3]), new HashSet<Subsystem>()));
+        xbox2.leftBumper(loop).whileTrue(new DeferredCommand(()->new IntakePeiceCommand(FieldPosits.IntakePoints.coralSpawnPoints[SystemManager.compass.getSlot()]), new HashSet<Subsystem>()));
+
+        return loop;
+    }
+
+
+
+
+
+    
 
     /**@return a new standardXboxControl loop */
     private EventLoop standardXboxControl(){
@@ -149,11 +178,48 @@ public class ControlChooser {
     /**@return a new auto test control loop */
     private EventLoop getAutoTestControl(){
         EventLoop loop = new EventLoop();
+
+        setDefaultCommand(new AbsoluteFieldDrive(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->{
+            if(utillFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
+           ,SystemManager.swerve, loop);
         new Trigger(loop, xbox1.leftTrigger(0.75)).onTrue(new InstantCommand(()->autoManager.giveControl())).onFalse(new InstantCommand(()->autoManager.takeControl()));
         
-        xbox1.b(loop).onTrue(SystemManager.swerve.driveToPose(FieldPosits.scoringPosits.F));
+        xbox1.b(loop).whileTrue(SystemManager.swerve.driveToPose(Constants.driveConstants.startingPosit));
+        xbox1.y(loop).whileTrue(new smallAutoDrive(Constants.driveConstants.startingPosit));
         xbox1.x(loop).onTrue(new InstantCommand(()->SystemManager.reefIndexer.resetSIMONLY()));
        
+        return loop;
+    }
+
+    private EventLoop runAutoDrive(){
+        EventLoop loop = new EventLoop();
+
+    
+
+        new Trigger(loop, ()->SystemManager.robot.heartBeat%2==1).onTrue(new InstantCommand(()->autoManager.giveControl()));
+
+       
+        return loop;
+    }
+
+    private EventLoop stinkyControl(){
+        EventLoop loop = new EventLoop();
+        setDefaultCommand(new AbsoluteDriveAdv(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->-xbox1.getLeftTriggerAxis()+xbox1.getRightTriggerAxis(), xbox1.pov(180), xbox1.pov(0), xbox1.pov(90), xbox1.pov(270))
+           ,SystemManager.swerve, loop);
+       
+
+       
+       xbox2.y(loop).onTrue(new InstantCommand(()->generalManager.scoreL4()));
+       xbox2.x(loop).onTrue(new InstantCommand(()->generalManager.scoreL3()));
+       xbox2.b(loop).onTrue(new InstantCommand(()->generalManager.scoreL2()));
+       xbox2.a(loop).onTrue(new InstantCommand(()->generalManager.scoreL1()));
+       xbox2.leftStick(loop).onTrue(new InstantCommand(()->generalManager.algaeConfig(false)));
+       xbox2.rightStick(loop).onTrue(new InstantCommand(()->generalManager.algaeConfig(true)));
+
+       xbox2.rightTrigger(0.4,loop).onTrue(new InstantCommand(()->generalManager.intake()));
+       xbox2.rightBumper(loop).onTrue(new InstantCommand(()->generalManager.outtake()));
+       xbox2.leftTrigger(0.4, loop).onTrue(new InstantCommand(()->generalManager.algaeRemove()));
+
         return loop;
     }
 

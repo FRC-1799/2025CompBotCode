@@ -58,7 +58,7 @@ public class wristElevatorControlManager{
 
         //wrist state
         else if(state==wristElevatorControllState.wrist){
-            if(!elevator.atLegalNonControlState()){
+            if(!elevator.atLegalNonControlState()&&wrist.getSetpoint().getDegrees()!=0){
                 state=wristElevatorControllState.fixElevator;
             }
             if(!elevator.isAtSetpoint()){

@@ -15,6 +15,7 @@ import frc.robot.Utils.utillFunctions;
 public class smallAutoDrive extends Command{
     protected Pose2d pose;
     protected int correctCount=0;
+    protected double runtime=0;
     protected static StructPublisher<Pose2d> goalPosePublisher = NetworkTableInstance.getDefault().getStructTopic("goalPose", Pose2d.struct).publish();
     protected PIDController pid = new PIDController(Constants.AutonConstants.smallAutoPID.kP, Constants.AutonConstants.smallAutoPID.kI, Constants.AutonConstants.smallAutoPID.kD);
 
@@ -30,6 +31,15 @@ public class smallAutoDrive extends Command{
         addRequirements(SystemManager.swerve);
     }
 
+    @Override
+    public void initialize(){
+        runtime=0;
+        pid.calculate(utillFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
+        if (isFinished()){
+            cancel();
+        }
+    }
+
      /**called ever rio cycle while the command is scheduled*/
     @Override
     public void execute(){
@@ -42,6 +52,10 @@ public class smallAutoDrive extends Command{
         SmartDashboard.putNumber("smallDriveSpeed", speed);
         SmartDashboard.putNumber("smallDriveError", utillFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
         SmartDashboard.putBoolean("smallDriveRunning", true);
+        runtime+=0.02;
+        SmartDashboard.putNumber("runtime", runtime);
+
+        
         goalPosePublisher.set(pose); 
     }
 
@@ -51,13 +65,16 @@ public class smallAutoDrive extends Command{
      */
     @Override
     public boolean isFinished(){
-        if (pid.atSetpoint()){
-            correctCount++;
-        }
-        else{
-            correctCount=0;
-        }
-        return correctCount>Constants.AutonConstants.autoDriveCorrectCount;
+        return pid.atSetpoint()&& SystemManager.swerve.getRobotVelocity().vxMetersPerSecond<0.01&& SystemManager.swerve.getRobotVelocity().vyMetersPerSecond<0.01;
+        // if (pid.atSetpoint()){
+        //     correctCount++;
+            
+        // }
+        // else{
+        //     correctCount=0;
+        // }
+        // return correctCount>Constants.AutonConstants.autoDriveCorrectCount;
+
     }
 
 

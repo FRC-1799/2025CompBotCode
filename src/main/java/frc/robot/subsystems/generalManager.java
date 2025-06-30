@@ -5,6 +5,7 @@ import java.util.Set;
 
 import frc.robot.SystemManager;
 import frc.robot.FieldPosits.reefLevel;
+import frc.robot.FieldPosits.reefLevel.algeaRemoval;
 import frc.robot.Utils.warningManager;
 import frc.robot.commands.states.*;
 
@@ -25,6 +26,9 @@ public class generalManager{
         L2(new scoreConfig(reefLevel.L2)),
         L3(new scoreConfig(reefLevel.L3)),
         L4(new scoreConfig(reefLevel.L4)),
+        algaeLow( new removeAlgaeConfig(algeaRemoval.low)),
+        algaeHigh(new removeAlgaeConfig(algeaRemoval.high)),
+        algaeRemoval(new removeAlgaeAct()),
         outtake(new outtaking()),
         resting(new resting());
 
@@ -57,6 +61,7 @@ public class generalManager{
       subsystems.add(SystemManager.wrist);
       subsystems.add(SystemManager.intake);
       subsystems.add(SystemManager.elevator);
+      subsystems.add(SystemManager.algaeRemover);
     }
 
 
@@ -119,6 +124,28 @@ public class generalManager{
     /**changes the current state to score l4 */
     public static void scoreL4(){
         startState(generalState.L4);
+    }
+
+
+    public static void algaeConfigHigh(){
+        startState(generalState.algaeHigh);
+    }
+
+    public static void algaeConfigLow(){
+        startState(generalState.algaeLow);
+    }
+
+    public static void algaeConfig(boolean isLow){
+        if(isLow){
+            algaeConfigLow();
+        }
+        else{
+            algaeConfigHigh();
+        }
+    }
+
+    public static void algaeRemove(){
+        startState(generalState.algaeRemoval);
     }
 
     /**changes the current state to the intaking state */

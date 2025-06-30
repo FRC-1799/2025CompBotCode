@@ -23,11 +23,16 @@ import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
 import frc.robot.FieldPosits.reefLevel;
 import frc.robot.FieldPosits.reefPole;
+import frc.robot.FieldPosits.reefLevel.algeaRemoval;
 import frc.robot.Utils.scoringPosit;
 import frc.robot.Utils.utillFunctions;
 import frc.robot.commands.auto.IntakePeiceCommand;
 import frc.robot.commands.auto.ScorePiece;
+
 import frc.robot.commands.auto.spin;
+
+import frc.robot.commands.auto.removeAlgae;
+
 
 public class autoManager{
 
@@ -209,11 +214,20 @@ public class autoManager{
     /** @return the best auto action to take at the frame called in the form of a command*/
     public static Command getAutoAction(){
         if (SystemManager.intake.hasPeice()){
+
             scoringPosit scorePose = getBestScorePosit();
             if (scorePose==null){
                 return new spin();
             }
+
+           
+            if (SystemManager.reefIndexer.blockedByAlgae((int)scorePose.pole.getRowAsIndex(), scorePose.level.getasInt())){
+                
+                return new removeAlgae(algeaRemoval.makeFromNumbers((int)(scorePose.pole.getRowAsIndex())/2, (int)SystemManager.reefIndexer.getAlgaeLevel(scorePose.pole.getRowAsIndex()/2)-1));
+                //return new removeAlgae(algeaRemoval.makeFromNumbers((int)(scorePose.pole.getRowAsIndex())/2+1, (int)SystemManager.reefIndexer.getAlgaeLevel((int)(scorePose.pole.getRowAsIndex()/2))-1));
+            }
             return new ScorePiece(scorePose);
+
         }
         else{
             Pose2d intakePosit = getBestIntakePosit();
@@ -235,12 +249,19 @@ public class autoManager{
         scoringPosit winningPole=null;
         double winningScore=0;
         for(reefPole pole:FieldPosits.scoringPosits.scoringPoles){
+
             int highLevel = getHighestLevelWithGuiIntegrated(pole.getRowAsIndex());
             if (highLevel==-1){
                 continue;
             }
             scoringPosit currentPosit = new scoringPosit(reefLevel.CreateFromLevel(highLevel), pole);
-            if (currentPosit.getPointValForItem()/(getMapPoint(currentPosit.getScorePose()).score*2+Constants.AutonConstants.bonusScore)>winningScore){
+            double score =  currentPosit.getPointValForItem()/(getMapPoint(currentPosit.getScorePose()).score*2+Constants.AutonConstants.bonusScore);
+
+        
+            if (SystemManager.reefIndexer.blockedByAlgae(pole.getRowAsIndex(), SystemManager.reefIndexer.getHighestLevelForRow(pole.getRowAsIndex())-1)){
+                score = score*1.1;
+            }
+            if (score>winningScore){
                 winningPole=currentPosit;
                 winningScore=currentPosit.getPointValForItem()/(getMapPoint(pole.getScorePosit()).score*2+Constants.AutonConstants.bonusScore);
             }

@@ -1,11 +1,47 @@
 package frc.robot.subsystems.vision;
 
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeReefSimulation;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.FieldPosits;
+
 
 public class simReefIndexer extends reefIndexerIO{
      
+
+     int heartBeat=0;
+     final boolean[][] algaeSorce={{true,false},{false,true},{true,false},{false,true},{true,false},{false,true}};;
+     boolean[][] algae = algaeSorce;
+
+
+        StructArrayPublisher<Pose3d> algeaPublisher = NetworkTableInstance.getDefault()
+    .getStructArrayTopic("reefAlgae", Pose3d.struct).publish();
+
+    public simReefIndexer(){
+    }
+
+    @Override
+    public void periodic(){
+        Pose3d[] algaeRender = new Pose3d[12];
+        for (int i=0; i<6;i++){
+            for (int j=0;j<2;j++){
+                //System.out.println(algae[i][j]);
+                if (algae[i][j]){
+                    algaeRender[i*2+j] = FieldPosits.algaeRenderPosits[i][j];
+                }
+                else{
+                    algaeRender[i*2+j] = new Pose3d();//FieldPosits.algaeRenderPosits[i][j];
+                }
+                
+            }
+        }
+        algeaPublisher.set(algaeRender);
+    }
+
 
     @Override
     public boolean[][] getFullReefState() {
@@ -34,6 +70,7 @@ public class simReefIndexer extends reefIndexerIO{
 
 
 
+
     @Override
     public void resetSIMONLY(){
         ReefscapeReefSimulation.getInstance().get().clearReef();
@@ -42,7 +79,18 @@ public class simReefIndexer extends reefIndexerIO{
 
     @Override 
     public boolean[][] getAlgeaPosits(){
-        return new boolean[2][6];
+        
+        return algae;
     }
+
+    @Override
+    public void freeAlgea(int row, int level){
+
+        algae[row][level]=false;
+    }
+
+
+
+
     
 }

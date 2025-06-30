@@ -2,35 +2,28 @@ package frc.robot.commands.auto;
 
 
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.PubSubOption;
-import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
-import frc.robot.Utils.scoringPosit;
+import frc.robot.FieldPosits.reefLevel.algeaRemoval;
 import frc.robot.Utils.utillFunctions;
-import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
 
 
-public class ScorePiece extends Command{
-    scoringPosit posit;
+public class removeAlgae extends Command{
+    algeaRemoval posit;
     boolean mechIsFinished=false;
     Command driveCommand;
     Command mechCommand;
     boolean hasSpit;
     boolean driveIsFinished;
-    protected StructPublisher<Pose2d> goalPublisher = NetworkTableInstance.getDefault().getStructTopic("ScorePeiceGoal", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
 
 
     /**
      * scores a peice at the defined scoring posit
      * @param posit the posit to score
      */
-    public ScorePiece(scoringPosit posit){
+    public removeAlgae(algeaRemoval posit){
         this.posit=posit;
         
     }
@@ -40,16 +33,15 @@ public class ScorePiece extends Command{
     @Override
     public void initialize(){
         //sets the mechs to the proper score state
-        generalManager.scoreAt(posit.level.getasInt());
+        generalManager.algaeConfig(posit.isLow);
 
         //starts auto drive
-        driveCommand=SystemManager.swerve.driveToPose(posit.getScorePose());
+        driveCommand=SystemManager.swerve.driveToPose(posit.getPose());
         driveCommand.schedule();
 
         //gets the mech command and sets the proper mech callback
         mechCommand=generalManager.getStateCommand();
         generalManager.setExternalEndCallback(this::mechIsFinishedCall);
-        goalPublisher.set(posit.getScorePose());
         
 
         //reinitalizes state booleans used
@@ -64,14 +56,14 @@ public class ScorePiece extends Command{
     public void execute() {
         //restarts the drive command if it finished early
         if (!driveCommand.isScheduled()){
-            if (utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getScorePose().getX(), SystemManager.getSwervePose().getY(), posit.getScorePose().getY())
+            if (utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getPose().getX(), SystemManager.getSwervePose().getY(), posit.getPose().getY())
                 >=Constants.AutonConstants.autoDriveScoreTolerence){
                 if (
-                    utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getScorePose().getX(),
-                    SystemManager.getSwervePose().getY(), posit.getScorePose().getY())
+                    utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getPose().getX(),
+                    SystemManager.getSwervePose().getY(), posit.getPose().getY())
                     <=Constants.AutonConstants.distanceWithinPathplannerDontWork){
 
-                    driveCommand= new smallAutoDrive(posit.getScorePose());
+                    driveCommand= new smallAutoDrive(posit.getPose());
                 }
                 driveCommand.schedule();
             }
@@ -83,12 +75,11 @@ public class ScorePiece extends Command{
 
         //starts outtake if relevent
         if (mechIsFinished&&driveIsFinished){
-            generalManager.outtake();
+            generalManager.algaeRemove();
             generalManager.setExternalEndCallback(this::intakeIsFinishedCall);
         }
 
         //debug info
-        SmartDashboard.putNumber("reef pole", posit.pole.getRowAsIndex());
     }
    
      /**
@@ -131,9 +122,9 @@ public class ScorePiece extends Command{
             
         }
         if (!wasInterupted){
-            autoManager.cycleCount++;
-            autoManager.score+=posit.getPointValForItem();
+            SystemManager.reefIndexer.freeAlgea(posit.getRow(), posit.getLevel());
         }
+
         
     }   
 }

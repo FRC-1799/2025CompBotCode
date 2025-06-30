@@ -21,10 +21,12 @@ public class simLidar implements lidarInterface{
             return obstacles;
         }
 
-        List<Pair<Translation2d, Translation2d>> fakeBotHitBoxes = SystemManager.fakeBot.getTrajHitboxes();
-        for (Pair<Translation2d, Translation2d> pair:fakeBotHitBoxes){
-            obstacles.add(pair);
-        }
+        obstacles.add(SystemManager.fakeBot.getHitbox());
+
+        // for (Pair<Translation2d, Translation2d> pair:fakeBotHitBoxes){
+        //     obstacles.add(pair);
+        // }
+        
 
 
         return obstacles;

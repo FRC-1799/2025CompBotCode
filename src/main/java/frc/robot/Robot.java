@@ -5,17 +5,32 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.FieldPosits.reefLevel;
+import frc.robot.FieldPosits.reefPole;
+import frc.robot.Utils.scoringPosit;
+import frc.robot.commands.auto.IntakePeiceCommand;
+import frc.robot.commands.auto.ScorePiece;
 import frc.robot.subsystems.autoManager;
+import frc.robot.subsystems.generalManager;
+
 import java.io.File;
 import java.io.IOException;
 import org.ironmaple.simulation.SimulatedArena;
@@ -35,11 +50,54 @@ public class Robot extends TimedRobot{
     ControlChooser controlChooser;
     int heartBeat=0;
     private Timer disabledTimer;
+    StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("robotPose", Pose2d.struct).publish(PubSubOption.periodic(0.02));
+    SendableChooser<Command> autoChooser=new SendableChooser<>();
+    SendableChooser<Pose2d> poseChooser=new SendableChooser<>();
+
+
+    
 
 
     public Robot(){
       instance = this;
-      SystemManager.SystemManagerInit();
+      SystemManager.SystemManagerInit(instance);
+
+        autoChooser.setDefaultOption("smart", new InstantCommand(()->autoManager.giveControl()));
+
+        if (!RobotBase.isReal()){
+            //for schemes too unsafe to run on the real bot
+        }
+
+
+        autoChooser.addOption("middle2", new ScorePiece(new scoringPosit(reefLevel.L2, reefPole.G)));
+        autoChooser.addOption("middle1", new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.G)));
+
+        autoChooser.addOption("left", new SequentialCommandGroup(
+          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.I)),
+          new IntakePeiceCommand(FieldPosits.IntakePoints.leftLeft),
+          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.K)),
+          new IntakePeiceCommand(FieldPosits.IntakePoints.leftLeft),
+          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.L)),
+          new IntakePeiceCommand(FieldPosits.IntakePoints.leftLeft)
+        ));
+        autoChooser.addOption("right", new SequentialCommandGroup(
+          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.F)),
+          new IntakePeiceCommand(FieldPosits.IntakePoints.rightRight),
+          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.C)),
+          new IntakePeiceCommand(FieldPosits.IntakePoints.rightRight),
+          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.D)),
+          new IntakePeiceCommand(FieldPosits.IntakePoints.rightRight)
+        ));
+
+        
+        SmartDashboard.putData("auto chooser", autoChooser);
+
+        poseChooser.setDefaultOption("middle", FieldPosits.startingPoints.midStart);
+        poseChooser.addOption("right", FieldPosits.startingPoints.rightStart);
+        poseChooser.addOption("left", FieldPosits.startingPoints.leftStart);
+        poseChooser.onChange(SystemManager.swerve::resetOdometry);
+        SmartDashboard.putData("Starting chooser", poseChooser);
+
     }
 
     public static Robot getInstance(){
@@ -57,6 +115,8 @@ public class Robot extends TimedRobot{
       FollowPathCommand.warmupCommand().schedule();
       this.controlChooser=new ControlChooser();
       DriverStation.silenceJoystickConnectionWarning(true);
+      DataLogManager.start();
+      
     }
 
     /**
@@ -75,8 +135,10 @@ public class Robot extends TimedRobot{
       // block in order for anything in the Command-based framework to work.
       CommandScheduler.getInstance().run();
       SystemManager.periodic();
+      posePublisher.set(SystemManager.getSwervePose());
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
+
     }
 
     /**
@@ -86,6 +148,10 @@ public class Robot extends TimedRobot{
     public void disabledInit(){
       disabledTimer.reset();
       disabledTimer.start();
+      generalManager.resting();
+      SystemManager.elevator.setSetpoint(0);
+      SystemManager.wrist.setSetpoint(new Rotation2d());
+      SystemManager.intake.reset();
     }
 
     @Override
@@ -103,8 +169,7 @@ public class Robot extends TimedRobot{
     public void autonomousInit()
     {
 
-
-      autoManager.giveControl();
+      autoChooser.getSelected().schedule();
     }
 
     /**
@@ -121,6 +186,7 @@ public class Robot extends TimedRobot{
      
 
       controlChooser.restart();
+      autoManager.takeControl();
       
 
     }

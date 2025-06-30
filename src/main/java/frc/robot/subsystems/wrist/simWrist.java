@@ -1,8 +1,6 @@
 package frc.robot.subsystems.wrist;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.wristElevatorControlManager;
 
@@ -35,6 +33,9 @@ public class simWrist extends wristIO{
         }
 
         SmartDashboard.putNumber("wristEncoder", position);
+        SmartDashboard.putNumber("WristencoderR2D", getCurrentLocationR2D().getDegrees());
+        SmartDashboard.putNumber("wristGoal", goal);
+        SmartDashboard.putBoolean("WristAtSetpoint", isAtSetpoint());
     }
 
 

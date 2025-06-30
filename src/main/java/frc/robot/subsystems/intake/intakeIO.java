@@ -4,37 +4,37 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
 
-public class intakeIO extends SubsystemBase{
+public abstract class intakeIO extends SubsystemBase{
 
     public enum hasPeiceState{
 		intaking,
 		full,
 		empty,
-		starting
-	}
+		starting	}
 
     public static enum intakeState{
         intaking,
         outtaking,
-        resting;
+        resting,
+        backRun;
+
     }
 
-    protected intakeState state;
+    protected intakeState state = intakeState.resting;
     BooleanSupplier stopTrigger=()->{return false;};
 
-    /**@return wether or not the intake currently contains a peice.*/
-    public boolean hasPeice(){throw new Error("The method hasPeice should have been implemented in a subclass but was not");}
 
     /**sets the intake state to intaking untill a peice is intaked */
     public void intake(){
-        intakeUntil(()->this.hasPeice());
+        this.intakeUntil(()->this.hasPeice());
     }
 
+    public void startBackrun(){
+    }
     /**
      * sets the intake state to intake untill trigger returns true 
      * @param trigger the supplier that will stop the intake when it returns true
@@ -46,7 +46,7 @@ public class intakeIO extends SubsystemBase{
 
     /**sets the intake state to outtake until the peice is outtaked*/
     public void outtake(){
-        outtakeUntil(()->!this.hasPeice());
+        this.outtakeUntil(()->!this.hasPeice());
     };
 
     /**
@@ -58,8 +58,6 @@ public class intakeIO extends SubsystemBase{
         stopTrigger=trigger;
     }
 
-    /**stops the intake */
-    public void stop(){throw new Error("The method stop should have been implemented in a subclass but was not");}
 
     /**resets the intake */
     public void reset(){
@@ -83,5 +81,10 @@ public class intakeIO extends SubsystemBase{
             
             .plus(SystemManager.elevator.getTranslation());    
     }
+
+    /**@return wether or not the intake currently contains a peice.*/
+    public abstract boolean hasPeice();
+    /**stops the intake */
+    public abstract void stop();
    
 } 

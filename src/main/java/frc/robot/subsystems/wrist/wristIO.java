@@ -2,7 +2,6 @@ package frc.robot.subsystems.wrist;
 
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -30,7 +29,7 @@ public class wristIO extends SubsystemBase{
 
     /**@return the current location as a roation2d */
     public Rotation2d getCurrentLocationR2D(){
-        return Rotation2d.fromDegrees(getCurrentLocation());
+        return Rotation2d.fromDegrees(this.getCurrentLocation());
     }
 
     /**@return the current setpoint as a rotation2d */
@@ -46,6 +45,6 @@ public class wristIO extends SubsystemBase{
 
     /**@return wether or not the wrist is at a position at which the elevator can safely move */
     public boolean atLegalNonControlState(){
-        return Math.abs(getCurrentLocationR2D().getDegrees())<Constants.wristConstants.tolerence;
+        return Math.abs(getCurrentLocation())<Constants.wristConstants.tolerence;
     }
 }
