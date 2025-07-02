@@ -20,7 +20,7 @@ public class photonSim extends SubsystemBase implements aprilTagInterface{
 
     /**
      * creates a new simulated vision system. 
-     * While it is possible to have simulated vision running on the real robot it is not recomended since the system does nothing and takes up a lot of proccesing time
+     * While it is possible to have simulated vision running on the real robot it is not recommended since the system does nothing and takes up a lot of processing time
     */
     public photonSim(){
         visionSim = new VisionSystemSim("main");

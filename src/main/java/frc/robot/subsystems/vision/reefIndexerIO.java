@@ -5,8 +5,8 @@ public abstract class reefIndexerIO{
 
 
     /**
-     * @param row the row or reef collom to check. is 0 indexed
-     * @param level the level to be checked. starts at l1 and is 0 indexed meaning that the level inputed will be 1 smaller than the standard level name
+     * @param row the row or reef Column to check. is 0 indexed
+     * @param level the level to be checked. starts at l1 and is 0 indexed meaning that the level inputted will be 1 smaller than the standard level name
      * @return wether or not the specified node is open 
      * */
     public boolean getIsClosed(int row, int level){
@@ -14,8 +14,8 @@ public abstract class reefIndexerIO{
     }
 
     /**
-     * @param row the row or reef collom to check. is 1 indexed
-     * @returns the heighest available level for the row given */
+     * @param row the row or reef column to check. is 1 indexed
+     * @returns the highest available level for the row given */
     public int getHighestLevelForRow(int row){
         if (!getIsClosed(row, 3)){
             return 4;
@@ -30,25 +30,27 @@ public abstract class reefIndexerIO{
     }
     
     /**
-     * @param row one of the 6 positions inbetween two reef colloms in which an algea can be placed,
-     * @param level wether the algea is on the lower level(id 0 in between l2 and l3) or on the higher level (level one in between l3 and l4)
-     * @return wether or not the specified posit has algea
+     * @param row one of the 6 positions in between two reef columns in which an algae can be placed,
+     * @param level wether the algae is on the lower level(id 0 in between l2 and l3) or on the higher level (level one in between l3 and l4)
+     * @return wether or not the specified posit has algae
      */
-    public boolean hasAlgea(int row, int level){
-        return this.getAlgeaPosits()[row][level];
+    public boolean hasAlgae(int row, int level){
+        return this.getAlgaePosits()[row][level];
     }
 
     /**
-     * returns a 2d list of booleans containing all possible algea positions and describing which ones actualy contain algea
-     * Outer list: One of the 6 positions inbetween two reef colloms in which an algea can be placed,
-     * Inner list: Wether the algea is on the lower level(id 0 in between l2 and l3) or on the higher level (level one in between l3 and l4)
+     * returns a 2d list of booleans containing all possible algae positions and describing which ones actually contain algae
+     * Outer list: One of the 6 positions in between two reef columns in which an algae can be placed,
+     * Inner list: Wether the algae is on the lower level(id 0 in between l2 and l3) or on the higher level (level one in between l3 and l4)
      * 
      */
-    public abstract boolean[][] getAlgeaPosits();
+
+    public abstract boolean[][] getAlgaePosits();
+
 
 
     /**
-     * Resets the reef to its starting position. SHOULD ONLY BE USED IN SIM FOR DEBUGING PERPOUSES
+     * Resets the reef to its starting position. SHOULD ONLY BE USED IN SIM FOR DEBUGGING PURPOSES
      * @throws error if called on a real vision system.
      */
     public abstract void resetSIMONLY();
@@ -58,13 +60,13 @@ public abstract class reefIndexerIO{
             return false;
         }
         else if (level==1){
-            return hasAlgea((int)Math.floor(row/2), 0);
+            return hasAlgae((int)Math.floor(row/2), 0);
         }
         else if (level==2){
-            return hasAlgea((int)Math.floor(row/2), 1)||hasAlgea((int)Math.floor(row/2), 0);
+            return hasAlgae((int)Math.floor(row/2), 1)||hasAlgae((int)Math.floor(row/2), 0);
         }
         else{
-            throw new Error("Attempted to get algae information about a level that doesnt exist. level number: " + level);
+            throw new Error("Attempted to get algae information about a level that doesn't exist. level number: " + level);
         }
     }
     public boolean isOpenSmart(int row, int level){
@@ -73,17 +75,19 @@ public abstract class reefIndexerIO{
 
     /**
      * Sets the algae's value at a certain row and level to False once it has been removed by us
-     * @param row one of the 6 positions inbetween two reef colloms in which an algea can be placed
-     * @param level wether the algea is on the lower level(id 0 in between l2 and l3) or on the higher level (id 1 in between l3 and l4)
+     * @param row one of the 6 positions in between two reef columns in which an algae can be placed
+     * @param level wether the algae is on the lower level(id 0 in between l2 and l3) or on the higher level (id 1 in between l3 and l4)
      */
-    public abstract void freeAlgea(int row, int level);
+
+    public abstract void freeAlgae(int row, int level);
+
 
     public int getAlgaeLevel(int row){
-        if(hasAlgea(row, 0)){
+        if(hasAlgae(row, 0)){
             
             return 1;
         }
-        else if (hasAlgea(row, 1)){
+        else if (hasAlgae(row, 1)){
             
             return 2;
         }

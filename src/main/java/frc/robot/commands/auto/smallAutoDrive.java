@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
-import frc.robot.Utils.utillFunctions;
+import frc.robot.Utils.utilFunctions;
 
 
 public class smallAutoDrive extends Command{
@@ -20,13 +20,13 @@ public class smallAutoDrive extends Command{
     protected PIDController pid = new PIDController(Constants.AutonConstants.smallAutoPID.kP, Constants.AutonConstants.smallAutoPID.kI, Constants.AutonConstants.smallAutoPID.kD);
 
     /**
-     * Creates a custom single PID auto drive. intended for driving short distances to incredible accuracy. does not contain any form of obstical avoidence.
+     * Creates a custom single PID auto drive. intended for driving short distances to incredible accuracy. does not contain any form of obstacle avoidance.
      * @param pose the pose to drive too.
      */
     public smallAutoDrive(Pose2d pose){
         this.pose=pose;
         pid.setSetpoint(0);
-        pid.setTolerance(Constants.AutonConstants.autoDriveScoreTolerence);
+        pid.setTolerance(Constants.AutonConstants.autoDriveScoreTolerance);
         
         addRequirements(SystemManager.swerve);
     }
@@ -34,7 +34,7 @@ public class smallAutoDrive extends Command{
     @Override
     public void initialize(){
         runtime=0;
-        pid.calculate(utillFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
+        pid.calculate(utilFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
         if (isFinished()){
             cancel();
         }
@@ -46,11 +46,11 @@ public class smallAutoDrive extends Command{
         
         Rotation2d angleRad = new Rotation2d(-(pose.getX()-SystemManager.getSwervePose().getX()), pose.getY()-SystemManager.getSwervePose().getY());
         
-        double speed = -pid.calculate(utillFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
+        double speed = -pid.calculate(utilFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
         SystemManager.swerve.drive(speed, angleRad, pose.getRotation());
 
         SmartDashboard.putNumber("smallDriveSpeed", speed);
-        SmartDashboard.putNumber("smallDriveError", utillFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
+        SmartDashboard.putNumber("smallDriveError", utilFunctions.pythagorean(pose.getX(), SystemManager.getSwervePose().getX(), pose.getY(), SystemManager.getSwervePose().getY()));
         SmartDashboard.putBoolean("smallDriveRunning", true);
         runtime+=0.02;
         SmartDashboard.putNumber("runtime", runtime);
@@ -61,7 +61,7 @@ public class smallAutoDrive extends Command{
 
 
     /**
-     * @return true once the robot has been within tolerence for three frames straight
+     * @return true once the robot has been within tolerance for three frames straight
      */
     @Override
     public boolean isFinished(){
@@ -80,10 +80,10 @@ public class smallAutoDrive extends Command{
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasCancled){
+    public void end(boolean wasCanceled){
         SmartDashboard.putBoolean("smallDriveRunning", false);
     }
 }

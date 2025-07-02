@@ -39,7 +39,7 @@ public final class Constants
     }
 
 
-    public static final double LOOP_TIME  = 0.02; //s, 20ms + 110ms sprk max velocity lag
+    public static final double LOOP_TIME  = 0.02; //s, 20ms + 110ms spark max velocity lag
     public static final int blinkinPort = 0;
     
 
@@ -52,7 +52,7 @@ public final class Constants
       public static final double chassisWidth=inchesToMeters(27);
       public static final double chassisHeight=inchesToMeters(27);
       public static final double steerInertia = 0.025;
-      public static final double wheelRadusInMeters = inchesToMeters(2);
+      public static final double wheelRadiusInMeters = inchesToMeters(2);
       public static final double robotMass = 50;//(33) * 0.453592; // 32lbs * kg per pound
       public static final double maxSpeed  = 4.6;
       public static final Matter chassis    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(3)), robotMass);
@@ -69,14 +69,16 @@ public final class Constants
     public static final PIDConstants smallAutoPID = new PIDConstants(1.0, 0, 0.5);
 
     public static final PIDConstants anglePID       = new PIDConstants(5, 0, 0);
-    public static final double colisionSpeed = 0;
+
+
+    public static final double collisionSpeed = 0;
 
     public static final double widthOfMapMeters=8;
     public static final double heightOfMapMeters=8.9;
     public static final double bonusScore=1;
 
-    public static final double autoDriveScoreTolerence  = 0.5;
-    public static final double autoDriveIntakeTolerence = 0.1;
+    public static final double autoDriveScoreTolerance  = 0.5;
+    public static final double autoDriveIntakeTolerance = 0.1;
     public static final double distanceWithinPathplannerDontWork = 0.5;
 
     public static final double humanPlayerBeingBad = 0.5;
@@ -96,12 +98,12 @@ public final class Constants
 
   /**Constants used for sim */
   public static class sim{
-    public static double targetTolerence =0.2;
+    public static double targetTolerance =0.2;
     public static double l4CoralDropCheatX=0.08;
     public static double l4CoralDropCheatY=0.1;
   }
 
-  /**constants to control wether or not a spesific system should be simulated */
+  /**constants to control wether or not a specific system should be simulated */
   public static class simConfigs{
     public static final boolean driveShouldBeSim=false||!RobotBase.isReal();
     public static final boolean intakeShouldBeSim=false||!RobotBase.isReal();
@@ -119,7 +121,7 @@ public final class Constants
 
   }
 
-  /**ids of all used controlers */
+  /**ids of all used controllers */
   public static class controllerIDs{
     public static final int commandXboxController1ID=0;
     public static final int commandXboxController2ID=1;
@@ -133,7 +135,7 @@ public final class Constants
     public static final int topIntake = 10;
     public static final int bottomIntake = 7;
     public static final double coralFromWristLen = 0.0715772;
-    public static final double coralLenght = 0.3;
+    public static final double coralLength = 0.3;
     public static final double coralWidth = 0.11;
 
 
@@ -145,7 +147,7 @@ public final class Constants
   }
 
   public static final class algaeRemoverConstants{
-    public static final double algeaTimerVal = 10;
+    public static final double algaeTimerVal = 10;
     public static final int motorID=12;
 
     public static final double motorSpeed = 0.7;
@@ -163,10 +165,10 @@ public final class Constants
     public static final int resetSwitchID = 7;
 
 
-    public static final double highAlgeaPrep = 0.8;
-    public static final double lowAlgeaPrep = 0;
-    // public static final double lowAlgeaAct = 0;
-    // public static final double highAlgeaAct = 0;
+    public static final double highAlgaePrep = 0.8;
+    public static final double lowAlgaePrep = 0;
+    // public static final double lowAlgaeAct = 0;
+    // public static final double highAlgaeAct = 0;
 
 
 
@@ -175,7 +177,7 @@ public final class Constants
     public static final Translation3d fromRobotCenter = new Translation3d(0.0584454, 0, 0.583565 );
     public static final double intakePosit = 0;
     public static final double startingPosit = 0;
-    public static final double tolerence = 0.05;
+    public static final double tolerance = 0.05;
     public static final double speedForSim =0.02;
     public static final double compressedLen = 0.889;
     public static final PIDConstants elevatorPID = new PIDConstants(1.7, 0, 0);
@@ -186,7 +188,7 @@ public final class Constants
 
 
     public static final boolean shouldUseCurrentEncoderReset=true;
-    public static final double currentResetThreashold=15;
+    public static final double currentResetThreshold=15;
 
 
     public static final int mainMotorID=2;
@@ -205,7 +207,7 @@ public final class Constants
         .withKD(0.005) // A velocity error of 1 rps results in 0.1 V output
         .withKG(1.8)
     ;
-    public static final double elevatorResetTolerence = 0.3;
+    public static final double elevatorResetTolerance = 0.3;
     
 
     // set Motion Magic settings
@@ -227,12 +229,12 @@ public final class Constants
     public static final Rotation2d l1EncoderVal = Rotation2d.fromDegrees(0);
     public static final Rotation2d restingPosit = Rotation2d.fromDegrees(0);
     public static final Rotation2d intakePosit = Rotation2d.fromDegrees(0);
-    public static final Rotation2d algeaPosit = Rotation2d.fromDegrees(0);
+    public static final Rotation2d algaePosit = Rotation2d.fromDegrees(0);
 
     public static final Rotation2d minDegrees = new Rotation2d();
     public static final Rotation2d maxDegrees = new Rotation2d();
     
-    public static final double tolerence = 3;
+    public static final double tolerance = 3;
     public static final double speedForSim=5;
     public static final int CANCoderID=3;
     public static final int throughBoreID = Constants.intakeConstants.topIntake;

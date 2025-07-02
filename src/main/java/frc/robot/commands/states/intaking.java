@@ -7,7 +7,7 @@ import frc.robot.subsystems.generalManager;
 
 
 public class intaking extends Command{
-    public boolean isInIntakingFase;
+    public boolean isInIntakingPhase;
 
     /**
      * Command to manage the intaking state
@@ -16,13 +16,13 @@ public class intaking extends Command{
         addRequirements(generalManager.subsystems);
     }
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
-        if (SystemManager.intake.hasPeice()){
+        if (SystemManager.intake.hasPiece()){
             cancel();
         }
-        isInIntakingFase=false;
+        isInIntakingPhase=false;
 
         SystemManager.elevator.setSetpoint(Constants.elevatorConstants.intakePosit);
         SystemManager.wrist.setSetpoint(Constants.wristConstants.intakePosit);
@@ -32,26 +32,26 @@ public class intaking extends Command{
     /**called ever rio cycle while the command is scheduled*/
     @Override
     public void execute(){
-        if (!isInIntakingFase && SystemManager.elevator.isAtSetpoint() && SystemManager.wrist.isAtSetpoint()){
+        if (!isInIntakingPhase && SystemManager.elevator.isAtSetpoint() && SystemManager.wrist.isAtSetpoint()){
             SystemManager.intake.intake();
-            isInIntakingFase=true;
+            isInIntakingPhase=true;
         }    
     }
 
-    /**@return true once the robot has aquired a peice */
+    /**@return true once the robot has acquired a piece */
     @Override
     public boolean isFinished(){
-        return SystemManager.intake.hasPeice();
+        return SystemManager.intake.hasPiece();
     }
 
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasInterupted){
-        generalManager.endCallback(wasInterupted);
+    public void end(boolean wasInterrupted){
+        generalManager.endCallback(wasInterrupted);
         SystemManager.intake.stop();
     }
 }

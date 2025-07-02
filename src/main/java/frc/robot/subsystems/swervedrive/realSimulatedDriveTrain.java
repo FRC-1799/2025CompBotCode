@@ -8,8 +8,8 @@ import frc.robot.SystemManager;
 
 
 /**class to create a simulated drive train that mirrors the yagsl drivetrain. 
- * This class is neccisary to have a simulated intake on a real robot since maplesim chassis actualy handle all intake logic, not the simulated intake itself.
- * This class keeps all functionality neccisary to run a simulated intake while removing all other drivetrain simulation.
+ * This class is necessary to have a simulated intake on a real robot since maplesim chassis actually handle all intake logic, not the simulated intake itself.
+ * This class keeps all functionality necessary to run a simulated intake while removing all other drivetrain simulation.
  */
 public class realSimulatedDriveTrain extends SwerveDriveSimulation{
 
@@ -18,7 +18,7 @@ public class realSimulatedDriveTrain extends SwerveDriveSimulation{
         super(DriveTrainSimulationConfig.Default(), SystemManager.getSwervePose());
     }
 
-    /**resets the simulated drivetrains pose to the real drivetrain pose and stops all simulated logic from running */
+    /**resets the simulated drivetrain's pose to the real drivetrain pose and stops all simulated logic from running */
     @Override
     public void simulationSubTick(){
         this.setSimulationWorldPose(SystemManager.getSwervePose());

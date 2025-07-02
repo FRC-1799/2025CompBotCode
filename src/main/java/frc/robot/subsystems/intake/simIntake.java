@@ -57,10 +57,10 @@ public class simIntake extends intakeIO{
         }
         
 
-        SmartDashboard.putBoolean("hasCoral", hasPeice());
+        SmartDashboard.putBoolean("hasCoral", hasPiece());
         SmartDashboard.putBoolean("intakeIsRunning", state==intakeState.intaking);
 
-        if (hasPeice()){
+        if (hasPiece()){
             coralPose = SystemManager.getIntakePosit();
         }
         else{
@@ -76,13 +76,13 @@ public class simIntake extends intakeIO{
 
     // }
     @Override
-    public boolean hasPeice(){
+    public boolean hasPiece(){
         return intakeSim.getGamePiecesAmount()==1;
     }
 
 
     public void outtakeInternal(){
-        if (hasPeice()){
+        if (hasPiece()){
             intakeSim.obtainGamePieceFromIntake();
             if (SystemManager.elevator.atLegalNonControlState()){
                 SimulatedArena.getInstance()

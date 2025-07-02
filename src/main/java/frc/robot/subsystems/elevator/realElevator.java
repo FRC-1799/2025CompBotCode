@@ -42,7 +42,7 @@ import frc.robot.subsystems.wristElevatorControlManager;
      
      @Override
      public void periodic(){
-        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.elevator||wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControllState.resting){
+        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.elevator||wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.resting){
             goal=setpoint;
         }
 

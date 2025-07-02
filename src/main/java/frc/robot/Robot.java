@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.FieldPosits.reefLevel;
 import frc.robot.FieldPosits.reefPole;
 import frc.robot.Utils.scoringPosit;
-import frc.robot.commands.auto.IntakePeiceCommand;
+import frc.robot.commands.auto.IntakePieceCommand;
 import frc.robot.commands.auto.ScorePiece;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
@@ -74,19 +74,19 @@ public class Robot extends TimedRobot{
 
         autoChooser.addOption("left", new SequentialCommandGroup(
           new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.I)),
-          new IntakePeiceCommand(FieldPosits.IntakePoints.leftLeft),
+          new IntakePieceCommand(FieldPosits.IntakePoints.leftLeft),
           new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.K)),
-          new IntakePeiceCommand(FieldPosits.IntakePoints.leftLeft),
+          new IntakePieceCommand(FieldPosits.IntakePoints.leftLeft),
           new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.L)),
-          new IntakePeiceCommand(FieldPosits.IntakePoints.leftLeft)
+          new IntakePieceCommand(FieldPosits.IntakePoints.leftLeft)
         ));
         autoChooser.addOption("right", new SequentialCommandGroup(
           new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.F)),
-          new IntakePeiceCommand(FieldPosits.IntakePoints.rightRight),
+          new IntakePieceCommand(FieldPosits.IntakePoints.rightRight),
           new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.C)),
-          new IntakePeiceCommand(FieldPosits.IntakePoints.rightRight),
+          new IntakePieceCommand(FieldPosits.IntakePoints.rightRight),
           new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.D)),
-          new IntakePeiceCommand(FieldPosits.IntakePoints.rightRight)
+          new IntakePieceCommand(FieldPosits.IntakePoints.rightRight)
         ));
 
         
@@ -121,7 +121,7 @@ public class Robot extends TimedRobot{
 
     /**
      * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics that you want ran
-     * during disabled, autonomous, teleoperated and test.
+     * during disabled, autonomous, telioperated and test.
      *
      * <p>This runs after the mode specific periodic functions, but before LiveWindow and
      * SmartDashboard integrated updating.
@@ -224,8 +224,8 @@ public class Robot extends TimedRobot{
 
 
 
-    StructArrayPublisher<Pose3d> algeaPublisher = NetworkTableInstance.getDefault()
-    .getStructArrayTopic("algea", Pose3d.struct).publish();
+    StructArrayPublisher<Pose3d> algaePublisher = NetworkTableInstance.getDefault()
+    .getStructArrayTopic("algae", Pose3d.struct).publish();
 
     StructPublisher<Pose2d> opponentPublisher = NetworkTableInstance.getDefault().getStructTopic("René DesCoded", Pose2d.struct).publish();
 
@@ -258,7 +258,7 @@ public class Robot extends TimedRobot{
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
 
-    algeaPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+    algaePublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
     coralPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
     robotPublisher.set(SystemManager.getSwervePose());
     

@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class FieldPosits {
    
 
-    public static class StaringGamePeices{
+    public static class StaringGamePieces{
         public static final Pose2d leftStack= new Pose2d(1.2, 5.8, new Rotation2d());
         public static final Pose2d midStack = new Pose2d(1.2, 4, new Rotation2d());
         public static final Pose2d rightStack = new Pose2d(1.2, 2.2, new Rotation2d());
@@ -82,6 +82,7 @@ public class FieldPosits {
     }
 
     public static class algaeScoringPoses{
+
         public static final Translation2d highTrans = new Translation2d();
         public static final Translation2d lowTrans = new Translation2d();
         public static final Pose2d A = new Pose2d(3.2, 4.027, Rotation2d.fromDegrees(180));
@@ -157,7 +158,7 @@ public class FieldPosits {
                 case L:
                     return scoringPosits.L;
                 default:
-                    throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
+                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
             }
         }
 
@@ -189,7 +190,7 @@ public class FieldPosits {
                 case L:
                     return 11;
                 default:
-                    throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
+                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
             }
         }
       }
@@ -221,7 +222,7 @@ public class FieldPosits {
          * get the level number of a reef level. This returns the index value so L1 will return 0 etc
          * @return the level number of the reef
          */
-        public int getasInt(){
+        public int getAsInt(){
             switch (this){
                 case L1:
                     return 0;
@@ -232,11 +233,11 @@ public class FieldPosits {
                 case L4:
                     return 3;
                 default:
-                    throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
+                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
             }
         }
 
-        /**@return the scoring translation for scoring at a particular level. this can be added to the scoring pose provided by reefPole to get a fully acurate scoring position*/
+        /**@return the scoring translation for scoring at a particular level. this can be added to the scoring pose provided by reefPole to get a fully accurate scoring position*/
         public Translation2d getTranslation(){
             switch (this){
                 case L1:
@@ -248,7 +249,7 @@ public class FieldPosits {
                 case L4:
                     return FieldPosits.scoringPosits.L4;
                 default:
-                    throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
+                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
             }
         }
 
@@ -264,7 +265,7 @@ public class FieldPosits {
                 case L4:
                     return Constants.wristConstants.l4EncoderVal;
                 default:
-                    throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
+                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
             }
         }
 
@@ -280,12 +281,12 @@ public class FieldPosits {
                 case L4:
                     return Constants.elevatorConstants.l4EncoderVal;
                 default:
-                    throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
+                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
             }
         }
 
 
-        public enum algeaRemoval {
+        public enum algaeRemovalEnum {
             AH(0,false),
             AL(0,true),
             BH(1,false),
@@ -302,12 +303,12 @@ public class FieldPosits {
             low(-1, false);
 
 
-            private algeaRemoval(int side, boolean isLow){
+            private algaeRemovalEnum(int side, boolean isLow){
                 this.isLow=isLow;
                 this.side=side;
 
             }
-            public static algeaRemoval makeFromNumbers(int side, int level){
+            public static algaeRemovalEnum makeFromNumbers(int side, int level){
                 if (level==0){
                     switch (side){
                         case 0:
@@ -323,7 +324,7 @@ public class FieldPosits {
                         case 5:
                             return FL;
                         default:
-                            throw new Error("You tried to create a algea removal position with an invalid side: " + side);
+                            throw new Error("You tried to create a algae removal position with an invalid side: " + side);
                     }
                 }
                 else if (level==1){
@@ -341,7 +342,7 @@ public class FieldPosits {
                         case 5:
                             return FH;
                         default:
-                            throw new Error("You tried to create a algea removal position with an invalid side: " + side);
+                            throw new Error("You tried to create a algae removal position with an invalid side: " + side);
                     }
                 }
                 throw new Error("You tried to create an algae removal at an invalid level: " + level);
@@ -352,25 +353,26 @@ public class FieldPosits {
 
             public double getElevatorValue(){
                 if (isLow){
-                    return Constants.elevatorConstants.lowAlgeaPrep;
+                    return Constants.elevatorConstants.lowAlgaePrep;
                 }
                 else{
-                    return Constants.elevatorConstants.highAlgeaPrep;
+                    return Constants.elevatorConstants.highAlgaePrep;
                 }
             }
 
 
 
             public Rotation2d getWristValue(){
-                return Constants.wristConstants.algeaPosit;
+                return Constants.wristConstants.algaePosit;
             }
 
             public Pose2d getPose(){
                 if (side==-1){
-                    throw new Error("The user attempted to use a function reserved for 2d algea information on a 1d algea information enum");
+                    throw new Error("The user attempted to use a function reserved for 2d algae information on a 1d algae information enum");
                 }
                 switch (side){
                     case 0:
+
                         return algaeScoringPoses.A;
                     case 1:
                         return algaeScoringPoses.B;
@@ -383,13 +385,13 @@ public class FieldPosits {
                     case 5:
                         return algaeScoringPoses.F;
                     default:
-                        throw new Error("This case is imposible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user somthing has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
+                        throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
                 }
             }
 
             public int getRow(){
                 if (side==-1){
-                    throw new Error("The user attempted to use a function reserved for 2d algea information on a 1d algea information enum");
+                    throw new Error("The user attempted to use a function reserved for 2d algae information on a 1d algae information enum");
                 }
                 return side;
             }

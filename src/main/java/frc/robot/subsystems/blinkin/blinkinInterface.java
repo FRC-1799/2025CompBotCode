@@ -20,7 +20,7 @@ public interface blinkinInterface {
             this.name=name;
         }
 
-        /**Dev function so colors can start to be implemented before they have been fully fleshed out internaly */
+        /**Dev function so colors can start to be implemented before they have been fully fleshed out internally */
         color(){
             throw new Error("You attempted to use a color that does not exist yet");
         }

@@ -13,7 +13,7 @@ public class starting extends Command{
         addRequirements(generalManager.subsystems);
     }
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
         SystemManager.wrist.setSetpoint(Constants.wristConstants.intakePosit);
@@ -25,7 +25,7 @@ public class starting extends Command{
     @Override
     public void execute(){
         if (generalManager.getStateCommand()!=this){
-            warningManager.throwAlert(warningManager.generalRoutineCalledManualy);
+            warningManager.throwAlert(warningManager.generalRoutineCalledManually);
             cancel();
         }
     }

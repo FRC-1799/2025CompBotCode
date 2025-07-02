@@ -15,7 +15,7 @@ public class compassGUI {
         return (int)level.get()+1;
     }
     public int getPole(){
-        // SmartDashboard.putNumber("Recived auto algin reeding", (int)Math.ceil(pole.get()*2/3));
+        // SmartDashboard.putNumber("Received auto algin reeding", (int)Math.ceil(pole.get()*2/3));
         // SmartDashboard.putNumber("ceil", Math.ceil((pole.get()*2/3.0)));
         return (int)Math.ceil(pole.get()*2/3.0);
     }

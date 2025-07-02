@@ -3,19 +3,19 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.FieldPosits.reefLevel.algeaRemoval;
+import frc.robot.FieldPosits.reefLevel.algaeRemovalEnum;
 import frc.robot.SystemManager;
 import frc.robot.subsystems.generalManager;
 
 public class removeAlgaeConfig extends Command {
-    algeaRemoval level;
+    algaeRemovalEnum level;
 
-    public removeAlgaeConfig(algeaRemoval level){
+    public removeAlgaeConfig(algaeRemovalEnum level){
         this.level=level;
         addRequirements(generalManager.subsystems);
     }
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
         SystemManager.elevator.setSetpoint(level.getElevatorValue());
@@ -33,11 +33,11 @@ public class removeAlgaeConfig extends Command {
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasInterupted){
-        generalManager.endCallback(wasInterupted);
+    public void end(boolean wasInterrupted){
+        generalManager.endCallback(wasInterrupted);
     }
 
 }

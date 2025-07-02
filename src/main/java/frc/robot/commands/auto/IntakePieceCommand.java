@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
-import frc.robot.Utils.utillFunctions;
+import frc.robot.Utils.utilFunctions;
 import frc.robot.Utils.warningManager;
 import frc.robot.commands.sim.CreateCoral;
 import frc.robot.subsystems.generalManager;
 
-public class IntakePeiceCommand extends Command{
+public class IntakePieceCommand extends Command{
     Pose2d intakePose;
     boolean mechIsFinished=false;
     boolean driveIsFinished=false;
@@ -24,19 +24,19 @@ public class IntakePeiceCommand extends Command{
 
 
     /**
-     * initalize a command to intake a peice
+     * initialize a command to intake a piece
      * @param intakePose the pose for the robot to intake from
      */
-    public IntakePeiceCommand(Pose2d intakePose){
+    public IntakePieceCommand(Pose2d intakePose){
         this.intakePose=intakePose;
         //addRequirements(SystemManager.swerve);
     }
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
         generalManager.intake();
-        driveCommand=SystemManager.swerve.driveToPose(intakePose, LinearVelocity.ofBaseUnits(Constants.AutonConstants.colisionSpeed, LinearVelocityUnit.combine(Units.Meters, Units.Second)));
+        driveCommand=SystemManager.swerve.driveToPose(intakePose, LinearVelocity.ofBaseUnits(Constants.AutonConstants.collisionSpeed, LinearVelocityUnit.combine(Units.Meters, Units.Second)));
         driveCommand.schedule();
         mechCommand=generalManager.getStateCommand();
         generalManager.setExternalEndCallback(this::mechIsFinishedCall);
@@ -53,10 +53,10 @@ public class IntakePeiceCommand extends Command{
         SmartDashboard.putBoolean("Drive is finished", driveIsFinished);
         SmartDashboard.putBoolean("coralHasBeenSpawned", coralHasBeenSpawned);
         if (!driveCommand.isScheduled()){
-            if (utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), intakePose.getX(), SystemManager.getSwervePose().getY(), intakePose.getY())
-                >=Constants.AutonConstants.autoDriveIntakeTolerence){
+            if (utilFunctions.pythagorean(SystemManager.getSwervePose().getX(), intakePose.getX(), SystemManager.getSwervePose().getY(), intakePose.getY())
+                >=Constants.AutonConstants.autoDriveIntakeTolerance){
                 if (
-                    utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), intakePose.getX(),
+                    utilFunctions.pythagorean(SystemManager.getSwervePose().getX(), intakePose.getX(),
                     SystemManager.getSwervePose().getY(), intakePose.getY())
                     <=Constants.AutonConstants.distanceWithinPathplannerDontWork){
 
@@ -70,7 +70,7 @@ public class IntakePeiceCommand extends Command{
         }
 
 
-        //spawns a coral if the robot is simulated and the time is apropreate
+        //spawns a coral if the robot is simulated and the time is appropriate
         if (driveIsFinished&&Constants.simConfigs.intakeShouldBeSim&&!coralHasBeenSpawned){
             coralHasBeenSpawned=true;
             new WaitCommand(Constants.AutonConstants.humanPlayerBeingBad).andThen(new CreateCoral(intakePose.plus(Constants.AutonConstants.intakeCoralOffset))).schedule();
@@ -81,32 +81,32 @@ public class IntakePeiceCommand extends Command{
 
     /**
      * function to be called when the mech is in its proper state
-     * @param wasInterupted wether or not the intake routine was cancled
+     * @param wasInterrupted wether or not the intake routine was canceled
      */
-    public void mechIsFinishedCall(boolean wasInterupted){
-        if (wasInterupted){
+    public void mechIsFinishedCall(boolean wasInterrupted){
+        if (wasInterrupted){
             cancel();
-            warningManager.throwAlert(warningManager.autoInternalCancled);
+            warningManager.throwAlert(warningManager.autoInternalCanceled);
         }
         mechIsFinished=true;
 
     }
 
     /**
-     * @return true once a peice has been aquired
+     * @return true once a piece has been acquired
      */
     @Override
     public boolean isFinished(){
-        return SystemManager.intake.hasPeice();
+        return SystemManager.intake.hasPiece();
     }
 
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasInterupted){
+    public void end(boolean wasInterrupted){
         SmartDashboard.putBoolean("auto intake is running", false);
         if (driveCommand.isScheduled()){
             driveCommand.cancel();

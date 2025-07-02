@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
 import frc.robot.Utils.scoringPosit;
-import frc.robot.Utils.utillFunctions;
+import frc.robot.Utils.utilFunctions;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
 
@@ -23,11 +23,11 @@ public class ScorePiece extends Command{
     Command mechCommand;
     boolean hasSpit;
     boolean driveIsFinished;
-    protected StructPublisher<Pose2d> goalPublisher = NetworkTableInstance.getDefault().getStructTopic("ScorePeiceGoal", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
+    protected StructPublisher<Pose2d> goalPublisher = NetworkTableInstance.getDefault().getStructTopic("ScorePieceGoal", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
 
 
     /**
-     * scores a peice at the defined scoring posit
+     * scores a piece at the defined scoring posit
      * @param posit the posit to score
      */
     public ScorePiece(scoringPosit posit){
@@ -36,11 +36,11 @@ public class ScorePiece extends Command{
     }
 
 
-    /**initalizes the command */
+    /**initializes the command */
     @Override
     public void initialize(){
-        //sets the mechs to the proper score state
-        generalManager.scoreAt(posit.level.getasInt());
+        //sets the mechanisms to the proper score state
+        generalManager.scoreAt(posit.level.getAsInt());
 
         //starts auto drive
         driveCommand=SystemManager.swerve.driveToPose(posit.getScorePose());
@@ -52,7 +52,7 @@ public class ScorePiece extends Command{
         goalPublisher.set(posit.getScorePose());
         
 
-        //reinitalizes state booleans used
+        //reinitializes state booleans used
         mechIsFinished=false;
         hasSpit=false;
         driveIsFinished=false;
@@ -64,10 +64,10 @@ public class ScorePiece extends Command{
     public void execute() {
         //restarts the drive command if it finished early
         if (!driveCommand.isScheduled()){
-            if (utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getScorePose().getX(), SystemManager.getSwervePose().getY(), posit.getScorePose().getY())
-                >=Constants.AutonConstants.autoDriveScoreTolerence){
+            if (utilFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getScorePose().getX(), SystemManager.getSwervePose().getY(), posit.getScorePose().getY())
+                >=Constants.AutonConstants.autoDriveScoreTolerance){
                 if (
-                    utillFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getScorePose().getX(),
+                    utilFunctions.pythagorean(SystemManager.getSwervePose().getX(), posit.getScorePose().getX(),
                     SystemManager.getSwervePose().getY(), posit.getScorePose().getY())
                     <=Constants.AutonConstants.distanceWithinPathplannerDontWork){
 
@@ -81,7 +81,7 @@ public class ScorePiece extends Command{
         }
 
 
-        //starts outtake if relevent
+        //starts outtake if relevant
         if (mechIsFinished&&driveIsFinished){
             generalManager.outtake();
             generalManager.setExternalEndCallback(this::intakeIsFinishedCall);
@@ -93,10 +93,10 @@ public class ScorePiece extends Command{
    
      /**
      * function to be called when the mech is in its proper state
-     * @param wasInterupted wether or not the intake routine was cancled
+     * @param wasInterrupted wether or not the intake routine was canceled
      */
-    public void mechIsFinishedCall(boolean wasInterupted){
-        if (wasInterupted){
+    public void mechIsFinishedCall(boolean wasInterrupted){
+        if (wasInterrupted){
             cancel();
         }
 
@@ -105,14 +105,14 @@ public class ScorePiece extends Command{
 
     /**
      * function to be called when the outtake has happened
-     * @param wasInterupted wether or not the intake routine was cancled
+     * @param wasInterrupted wether or not the intake routine was canceled
      */
-    public void intakeIsFinishedCall(boolean wasInterupted){
+    public void intakeIsFinishedCall(boolean wasInterrupted){
         hasSpit=true;
     }
 
     /**
-     * @return true once the peice has been outtaked
+     * @return true once the piece has been outtaked
      */
     @Override
     public boolean isFinished(){
@@ -122,15 +122,15 @@ public class ScorePiece extends Command{
 
     /**
      * command called when the command finishes
-     * @param wasInterupted wether or not the command was cancled
+     * @param wasInterrupted wether or not the command was canceled
     */
     @Override
-    public void end(boolean wasInterupted){
+    public void end(boolean wasInterrupted){
         if (driveCommand.isScheduled()){
             driveCommand.cancel();
             
         }
-        if (!wasInterupted){
+        if (!wasInterrupted){
             autoManager.cycleCount++;
             autoManager.score+=posit.getPointValForItem();
         }

@@ -20,7 +20,7 @@ public class removeAlgaeAct extends Command{
     }
 
     @Override
-    public void end(boolean wasInterupted){
-        generalManager.endCallback(wasInterupted);
+    public void end(boolean wasInterrupted){
+        generalManager.endCallback(wasInterrupted);
     }
 }

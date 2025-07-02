@@ -85,7 +85,7 @@ public class coralGUI extends SubsystemBase {
         return new boolean[]{leftIntakeVals[0], leftIntakeVals[1], leftIntakeVals[2], rightIntakeVals[0], rightIntakeVals[1], rightIntakeVals[2]};
     }
 
-    public boolean getIntakeStationAvail(int intakeStaton){
-        return getIntakeList()[intakeStaton];
+    public boolean getIntakeStationAvail(int intakeStation){
+        return getIntakeList()[intakeStation];
     }
 }

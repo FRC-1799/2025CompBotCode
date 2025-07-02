@@ -22,8 +22,8 @@ import frc.robot.FieldPosits.reefLevel;
 import frc.robot.FieldPosits.reefPole;
 import frc.robot.Utils.BetterTrigger;
 import frc.robot.Utils.scoringPosit;
-import frc.robot.Utils.utillFunctions;
-import frc.robot.commands.auto.IntakePeiceCommand;
+import frc.robot.Utils.utilFunctions;
+import frc.robot.commands.auto.IntakePieceCommand;
 import frc.robot.commands.auto.ScorePiece;
 import frc.robot.commands.auto.smallAutoDrive;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
@@ -56,13 +56,13 @@ public class ControlChooser {
         }
 
 
-        chooser.addOption("autoTestControll", getAutoTestControl());
+        chooser.addOption("autoTestControl", getAutoTestControl());
         chooser.addOption("testControl", getTestControl());
         chooser.addOption("StandardXboxControl", standardXboxControl());
         chooser.addOption("demoControl", demoControl());
         chooser.addOption("runAutoControl", runAutoDrive());
         chooser.addOption("autoAlign", autoAlignControl());
-        chooser.addOption("stinkyControll", stinkyControl());
+        chooser.addOption("stinkyControl", stinkyControl());
         
         
         chooser.onChange((EventLoop scheme)->{changeControl(scheme);});
@@ -74,7 +74,7 @@ public class ControlChooser {
 
 
     /**
-     * changes the control shceme to the scheme specified
+     * changes the control scheme to the scheme specified
      * @param scheme the scheme to change too
      */
     public void changeControl(EventLoop scheme){
@@ -105,7 +105,7 @@ public class ControlChooser {
     /**
      * configures a default command that can run on a loop.
      * @param defaultCommand the command to make the default
-     * @param subsystem the subystem this command is the default for
+     * @param subsystem the subsystem this command is the default for
      * @param loop the loop to attach the default command too
      */
     public static void setDefaultCommand(Command defaultCommand, Subsystem subsystem, EventLoop loop){
@@ -117,7 +117,7 @@ public class ControlChooser {
     private EventLoop getTestControl(){
         EventLoop loop = new EventLoop();
         setDefaultCommand(new AbsoluteFieldDrive(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->{
-            if(utillFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
+            if(utilFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
        
        xbox1.y(loop).onTrue(new InstantCommand(()->generalManager.scoreL4()));
@@ -141,8 +141,8 @@ public class ControlChooser {
         ,SystemManager.swerve, loop);
         
         xbox2.a(loop).whileTrue(new DeferredCommand(()->new ScorePiece(new scoringPosit(reefLevel.CreateFromLevel(SystemManager.compass.getLevel()), reefPole.fromInt(SystemManager.compass.getPole()))), new HashSet<Subsystem>()));
-        xbox2.rightBumper(loop).whileTrue(new DeferredCommand(()->new IntakePeiceCommand(FieldPosits.IntakePoints.coralSpawnPoints[SystemManager.compass.getSlot()+3]), new HashSet<Subsystem>()));
-        xbox2.leftBumper(loop).whileTrue(new DeferredCommand(()->new IntakePeiceCommand(FieldPosits.IntakePoints.coralSpawnPoints[SystemManager.compass.getSlot()]), new HashSet<Subsystem>()));
+        xbox2.rightBumper(loop).whileTrue(new DeferredCommand(()->new IntakePieceCommand(FieldPosits.IntakePoints.coralSpawnPoints[SystemManager.compass.getSlot()+3]), new HashSet<Subsystem>()));
+        xbox2.leftBumper(loop).whileTrue(new DeferredCommand(()->new IntakePieceCommand(FieldPosits.IntakePoints.coralSpawnPoints[SystemManager.compass.getSlot()]), new HashSet<Subsystem>()));
 
         return loop;
     }
@@ -157,7 +157,7 @@ public class ControlChooser {
     private EventLoop standardXboxControl(){
         EventLoop loop = new EventLoop();
         setDefaultCommand(new AbsoluteFieldDrive(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->{
-            if(utillFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
+            if(utilFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
             ,SystemManager.swerve, loop);
         //setDefaultCommand(SystemManager.swerve.driveCommand(()->0, ()->0, ()->xbox1.getLeftX(), ()->xbox1.getLeftY()), SystemManager.swerve, loop);
         xbox1.b(loop).onTrue(SystemManager.swerve.driveToPose(new Pose2d(10,10, new Rotation2d(Math.PI))));
@@ -180,7 +180,7 @@ public class ControlChooser {
         EventLoop loop = new EventLoop();
 
         setDefaultCommand(new AbsoluteFieldDrive(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->{
-            if(utillFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
+            if(utilFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
         new Trigger(loop, xbox1.leftTrigger(0.75)).onTrue(new InstantCommand(()->autoManager.giveControl())).onFalse(new InstantCommand(()->autoManager.takeControl()));
         

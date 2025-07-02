@@ -31,15 +31,15 @@ public class scoringPosit {
 
     /**
      * @return the current worth of this item. 
-     *While this will adjust for auto it may be slightly incosistent for routes that start and the end of auto since those routes will likly score after auto ends and telliop starts 
+     *While this will adjust for auto it may be slightly inconsistent for routes that start and the end of auto since those routes will likely score after auto ends and telliop starts 
     */
     public int getPointValForItem() {
-       return getPointValForItem(level.getasInt());
+       return getPointValForItem(level.getAsInt());
     }
 
     /**
      * gets the current point value of the specified level
-     * * While this will adjust for auto it may be slightly incosistent for routes that start and the end of auto since those routes will likly score after auto ends and telliop starts 
+     * * While this will adjust for auto it may be slightly inconsistent for routes that start and the end of auto since those routes will likely score after auto ends and telliop starts 
      * @param level the level to calculate the score for
      * @return the point value of scoring at the given position
     */
