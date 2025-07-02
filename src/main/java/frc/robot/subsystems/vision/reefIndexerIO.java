@@ -5,7 +5,7 @@ public abstract class reefIndexerIO{
 
 
     /**
-     * @param row the row or reef Colum to check. is 0 indexed
+     * @param row the row or reef Column to check. is 0 indexed
      * @param level the level to be checked. starts at l1 and is 0 indexed meaning that the level inputted will be 1 smaller than the standard level name
      * @return wether or not the specified node is open 
      * */
@@ -79,7 +79,7 @@ public abstract class reefIndexerIO{
      * @param level wether the algae is on the lower level(id 0 in between l2 and l3) or on the higher level (id 1 in between l3 and l4)
      */
 
-    public abstract void freeAlgea(int row, int level);
+    public abstract void freeAlgae(int row, int level);
 
 
     public int getAlgaeLevel(int row){

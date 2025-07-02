@@ -193,7 +193,7 @@ public class generalManager{
 
     /**
      * to be called whenever a state command finishes
-     * @param wasInterrupted wether or not the command was interrupted
+     * @param wasInterrupted whether or not the command was interrupted
      */
     public static void endCallback(boolean wasInterrupted){
         
