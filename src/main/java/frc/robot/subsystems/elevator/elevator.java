@@ -30,18 +30,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.elevatorConstants;
-import frc.robot.yams.mechanisms.config.ElevatorConfig;
-import frc.robot.yams.mechanisms.config.MechanismPositionConfig;
-import frc.robot.yams.mechanisms.positional.Elevator;
-import frc.robot.yams.motorcontrollers.SmartMotorController;
-import frc.robot.yams.motorcontrollers.SmartMotorControllerConfig;
-import frc.robot.yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
-import frc.robot.yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
-import frc.robot.yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
-import frc.robot.yams.motorcontrollers.remote.TalonFXWrapper;
+import yams.gearing.GearBox;
+import yams.gearing.MechanismGearing;
+import yams.mechanisms.config.ElevatorConfig;
+import yams.mechanisms.config.MechanismPositionConfig;
+import yams.mechanisms.positional.Elevator;
+import yams.motorcontrollers.SmartMotorController;
+import yams.motorcontrollers.SmartMotorControllerConfig;
+import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+import yams.motorcontrollers.remote.TalonFXWrapper;
 
-import static frc.robot.yams.mechanisms.SmartMechanism.gearbox;
-import static frc.robot.yams.mechanisms.SmartMechanism.gearing;
 
 
 public class elevator extends SubsystemBase
@@ -60,7 +60,7 @@ public class elevator extends SubsystemBase
       .withClosedLoopController(elevatorConstants.KP, elevatorConstants.KI, elevatorConstants.KD,elevatorConstants.maxSpeed, elevatorConstants.maxAccel)
       .withSoftLimit(Meters.of(-0.03), Meters.of(Constants.elevatorConstants.maxHeight))
       
-      .withGearing(gearing(gearbox(5, 2)))
+      .withGearing(new MechanismGearing(GearBox.fromReductionStages(5, 2)))
 //      .withExternalEncoder(armMotor.getAbsoluteEncoder())
       .withIdleMode(MotorMode.BRAKE)
       .withTelemetry("ElevatorMotor", TelemetryVerbosity.HIGH)
