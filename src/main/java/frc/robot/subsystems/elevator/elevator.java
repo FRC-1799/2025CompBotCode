@@ -92,7 +92,8 @@ public class elevator extends SubsystemBase
       
       .withMechanismPositionConfig(m_robotToMechanism)
       .withAngle(Constants.elevatorConstants.angle)
-      .withMass(elevatorConstants.elevatorWeight);
+      .withMass(elevatorConstants.elevatorWeight)
+      .withForceSim(Constants.simConfigs.elevatorShouldBeSim);
   
   private final Elevator m_elevator = new Elevator(m_config);
   
